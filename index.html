@@ -3,139 +3,1015 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanket Sharma - Portfolio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <title>Sanket Sharma - Engineering & Physics Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --cyan-glow: rgba(6, 182, 212, 0.5);
+            --dark-navy: #0a192f;
+            --light-navy: #112240;
+            --slate: #8892b0;
+            --light-slate: #a8b2d1;
+            --white: #e6f1ff;
+            --cyan: #06b6d4;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: var(--dark-navy);
+            color: var(--slate);
+            cursor: none;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-navy);
+            z-index: 10001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #preloader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--light-navy);
+            border-top: 4px solid var(--cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 3D background canvas */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Custom mouse cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10000;
+            transition: all 0.15s ease-out;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--cyan);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--cyan);
+        }
+        .cursor-grow {
+            transform: scale(2.5) translate(-20%, -20%);
+            background-color: var(--cyan-glow);
+            border: none;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(10, 25, 47, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: top 0.3s ease-in-out;
+        }
+
+        /* Content wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scroll animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Section styles */
+        h2.section-heading {
+            font-size: clamp(26px, 5vw, 32px);
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 20px;
+        }
+        h2.section-heading::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 100%;
+            background-color: var(--cyan);
+            border-radius: 2px;
+        }
+        .section-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 100px 1rem;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--light-navy);
+            top: 0;
+            bottom: 0;
+            left: 30px;
+        }
+        .timeline-item {
+            padding: 10px 0 30px 70px;
+            position: relative;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 21px;
+            background-color: var(--dark-navy);
+            border: 3px solid var(--cyan);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Featured Project Card */
+        .featured-project {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(12, 1fr);
+            align-items: center;
+            margin-bottom: 70px;
+        }
+        .project-content { grid-column: 1 / 7; grid-row: 1 / -1; text-align: left; }
+        .project-image { grid-column: 7 / -1; grid-row: 1 / -1; }
+        .featured-project.ssos .project-content { grid-column: 1 / 8; }
+        .featured-project.ssos .project-image { grid-column: 8 / -1; }
+        .featured-project:nth-of-type(even) .project-content { grid-column: 7 / -1; text-align: right; }
+        .featured-project:nth-of-type(even) .project-image { grid-column: 1 / 7; }
+        .featured-project:nth-of-type(even) .project-tech-list { justify-content: flex-end; }
+        
+        /* Interactive Visual Canvas */
+        #interactive-visual-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            height: 350px;
+            margin: auto;
+        }
+        #interactive-visual-canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        /* Fun Section */
+        #fun-section-container {
+            position: relative;
+        }
+        #game-of-life-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        .fun-card {
+            background-color: var(--light-navy);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .fun-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+        }
+
+    </style>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <div class="branding">
-                <h1>Sanket Sharma</h1>
-                <p>Mechatronics Engineer & Firmware Developer</p>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#honors">Honors</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+<body class="bg-gray-900 text-white">
+    <div id="preloader"><div class="loader"></div></div>
+    
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <canvas id="three-canvas"></canvas>
+
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="fixed w-full z-20 top-0">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <a href="#home" class="text-2xl font-bold tracking-wider text-cyan-400">#-*</a>
+                <div class="hidden md:flex items-center space-x-8 text-light-slate">
+                    <a href="#about" class="hover:text-cyan-400 transition-colors duration-300 font-mono text-sm">About</a>
+                    <a href="#experience" class="hover:text-cyan-400 transition-colors duration-300 font-mono text-sm">Experience</a>
+                    <a href="#projects" class="hover:text-cyan-400 transition-colors duration-300 font-mono text-sm">Work</a>
+                    <a href="#mentorship" class="hover:text-cyan-400 transition-colors duration-300 font-mono text-sm">Mentorship</a>
+                    <a href="#fun" class="hover:text-cyan-400 transition-colors duration-300 font-mono text-sm">For Fun</a>
+                    <a href="#contact" class="hover:text-cyan-400 transition-colors duration-300 font-mono text-sm">Contact</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
             </nav>
-        </div>
-    </header>
-    <section id="about" data-aos="fade-up">
-        <div class="container">
-            <h2>About Me</h2>
-            <p>I'm a passionate mechatronics engineer specializing in advanced control systems, robotics, and UAV applications. I excel in problem-solving and teamwork.</p>
-        </div>
-    </section>
-    <section id="experience" data-aos="fade-up">
-        <div class="container">
-            <h2>Experience</h2>
-            <div class="experience">
-                <h3>Airbotix Technology</h3>
-                <p>Firmware Engineer | Jan 2024 - Present</p>
-                <p>Developing and enhancing Ardupilot codebase for UAV systems.</p>
-                
-                <h3>CUAV Tech</h3>
-                <p>Technical Advisor | Sep 2023 - Present</p>
-                <p>Creating low-cost precision landing solutions using advanced imaging techniques.</p>
-                
-                <h3>General Aeronautics</h3>
-                <p>Intern | Dec 2022 - Sep 2023</p>
-                <p>Developed terrain-following algorithms for agricultural UAVs.</p>
-                
-                <h3>eYantra, IIT Bombay</h3>
-                <p>Robotic Trainee | May 2023 - Jul 2023</p>
-                <p>Developed tilt-rotor omni-tricopter simulations and control algorithms.</p>
-                
-                <h3>Ardupilot</h3>
-                <p>Contributor | May 2022 - Sep 2022</p>
-                <p>Enhanced ROS integration and autonomous path-planning for UAVs.</p>
+            <div id="mobile-menu" class="hidden md:hidden bg-light-navy">
+                <a href="#about" class="block py-3 px-6 text-sm hover:bg-gray-700">About</a>
+                <a href="#experience" class="block py-3 px-6 text-sm hover:bg-gray-700">Experience</a>
+                <a href="#projects" class="block py-3 px-6 text-sm hover:bg-gray-700">Projects</a>
+                <a href="#mentorship" class="block py-3 px-6 text-sm hover:bg-gray-700">Mentorship</a>
+                <a href="#fun" class="block py-3 px-6 text-sm hover:bg-gray-700">For Fun</a>
+                <a href="#contact" class="block py-3 px-6 text-sm hover:bg-gray-700">Contact</a>
+                <a href="Resume-1.pdf" target="_blank" class="block py-3 px-6 text-sm hover:bg-gray-700">Resume</a>
             </div>
-        </div>
-    </section>
-    <section id="projects" data-aos="fade-up">
-        <div class="container">
-            <h2>Projects</h2>
-            <div class="projects">
-                <h3>High Altitude Non-GPS Navigation</h3>
-                <p>Innovative UAV navigation using camera-based localization.</p>
-                
-                <h3>4-legged Dog Robot</h3>
-                <p>Autonomous robot with AI interaction capabilities.</p>
-                
-                <h3>Sahaya</h3>
-                <p>Humanoid robot for elderly care, featuring autonomous navigation.</p>
-                
-                <h3>AgriDrone</h3>
-                <p>Multi-functional drone for agriculture, including irrigation and crop analysis.</p>
-                
-                <h3>Parkinson’s Spoon</h3>
-                <p>Stabilizing spoon for people with Parkinson's disease.</p>
-                
-                <h3>Micromouse</h3>
-                <p>ROS-based maze-solving robot using advanced algorithms.</p>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center section-container">
+            <div class="fade-up is-visible">
+                <h1 class="text-lg text-cyan-400 font-mono mb-4">Hi, my name is</h1>
+                <h2 class="text-4xl md:text-7xl font-bold text-white text-left m-0 p-0">Sanket Sharma.</h2>
+                <h3 class="text-4xl md:text-6xl font-bold text-slate mt-2">I build things for the cosmos.</h3>
+                <p class="mt-6 max-w-xl text-lg leading-relaxed">I'm a mechatronics engineer specializing in control systems, robotics, and the application of physics principles to solve complex technological challenges. Currently, I'm the Co-founder and CTO at Summon, pioneering advancements in humanoid robotics.</p>
+                <a href="#projects" class="inline-block mt-8 px-8 py-4 border border-cyan-400 text-cyan-400 rounded hover:bg-cyan-400/10 transition-colors duration-300 font-mono">Check out my work!</a>
             </div>
-        </div>
-    </section>
-    <section id="skills" data-aos="fade-up">
-        <div class="container">
-            <h2>Skills</h2>
-            <ul class="skills-list">
-                <li>ROS, Python & C/C++</li>
-                <li>Control Systems & Mathematical Modelling</li>
-                <li>Linux & Bash</li>
-                <li>3D Modelling & 3D Printing</li>
-                <li>PX4 & Ardupilot</li>
-                <li>Embedded Electronics</li>
-            </ul>
-        </div>
-    </section>
-    <section id="education" data-aos="fade-up">
-        <div class="container">
-            <h2>Education</h2>
-            <p><strong>BE in Mechatronics (Aug 2020 — Jul 2024)</strong></p>
-            <p>Chandigarh University</p>
-        </div>
-    </section>
-    <section id="honors" data-aos="fade-up">
-        <div class="container">
-            <h2>Honors & Recognition</h2>
-            <ul>
-                <li>Speaker at PX4 Developer Summit, USA.</li>
-                <li>National Level Finalist at CDAC and IEEE GCON Vegathon.</li>
-                <li>Project mentor at Hack JMI 2023.</li>
-                <li>Finalist at Smart India Hackathon 2022 by Ministry of Education, India.</li>
-                <li>Winner of Tekathon’22 for Sahaya humanoid.</li>
-                <li>Semi-finalist at SAMVEDAN 2021 for agri-drone.</li>
-                <li>Runner up in eYRC robotics competition.</li>
-                <li>Finalist in TATA Crucible Hackathon 2021.</li>
-                <li>Winner of various International hackathons.</li>
-            </ul>
-        </div>
-    </section>
-    <section id="contact" data-aos="fade-up">
-        <div class="container">
-            <h2>Contact</h2>
-            <p>Email: <a href="mailto:sharma.sanket272@gmail.com">sharma.sanket272@gmail.com</a></p>
-            <p>Phone: +917018889115</p>
-            <p>Address: Hatwas, Tehsil Nagrota Bagwan, District Kangra, Himachal Pradesh</p>
-        </div>
-    </section>
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Sanket Sharma</p>
-        </div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section-container fade-up">
+            <h2 class="section-heading">About Me</h2>
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-12">
+                <div class="md:w-2/3 text-lg">
+                    <p class="mb-4 leading-relaxed">Hello! I'm Sanket, an engineer with a profound fascination for the intersection of technology, mathematics, and physics. My journey began with a simple curiosity about how things work, which evolved into a deep passion for creating intelligent systems that can navigate and interact with the physical world. I thrive on pushing the boundaries of robotics and autonomous systems, focusing on the confluence of advanced control theory, reinforcement learning, and real-world hardware implementation.</p>
+                    <p class="mb-4 leading-relaxed">From developing non-GPS navigation for UAVs at high altitudes to architecting the electronic and software stacks for bipedal humanoids, I am driven by the challenge of translating theoretical models into real-world applications. I believe in the power of open-source collaboration to solve some of the most challenging problems in engineering, from deep-space exploration to terrestrial automation.</p>
+                    <p class="mb-4">Here are a few technologies I've been working with recently:</p>
+                    <ul class="grid grid-cols-2 gap-2 font-mono text-sm text-slate">
+                        <li class="flex items-center"><span class="text-cyan-400 mr-2">▹</span>C++ & Python</li>
+                        <li class="flex items-center"><span class="text-cyan-400 mr-2">▹</span>ROS/ROS2 & Isaac Sim</li>
+                        <li class="flex items-center"><span class="text-cyan-400 mr-2">▹</span>Reinforcement Learning (RL)</li>
+                        <li class="flex items-center"><span class="text-cyan-400 mr-2">▹</span>Control Systems (PINN, MPC)</li>
+                        <li class="flex items-center"><span class="text-cyan-400 mr-2">▹</span>PyTorch & OpenCV</li>
+                        <li class="flex items-center"><span class="text-cyan-400 mr-2">▹</span>Ardupilot & PX4 Firmware</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/3 mx-auto">
+                    <div id="interactive-visual-container">
+                        <canvas id="interactive-visual-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Experience Section -->
+        <section id="experience" class="section-container fade-up">
+            <h2 class="section-heading">Where I've Worked</h2>
+            <div class="timeline">
+                <div class="timeline-item fade-up">
+                    <h3 class="text-xl font-bold text-white">Co-founder, CTO <span class="text-cyan-400">@ Summon</span></h3>
+                    <p class="text-sm font-mono text-slate mb-3">March 2025 - Present</p>
+                    <p class="text-slate leading-relaxed">Leading the full-stack development for a bipedal humanoid. Architecting the electronics, handware, and software stack for bipedal locomotion and mobile manipulation. <br> Working with Isaac Sim, RL (PPO, H-GAIL, ACT), VLAs, computer-vision, Physics-Informed Neural Network based Optimal Controls and advanced control design</p>
+                </div>
+                <div class="timeline-item fade-up">
+                    <h3 class="text-xl font-bold text-white">Senior Control Engineer <span class="text-cyan-400">@ Airbotix Technology</span></h3>
+                    <p class="text-sm font-mono text-slate mb-3">Jan 2024 - March 2025</p>
+                    <p class="text-slate leading-relaxed">Worked on IdEX Underwater AUV, High-Altitude Aerostat for Indian Defence and Technical lead for Drone Show stack. <br> Other major contributions includes network analysis, RF comms, control system design and electronics.</p>
+                </div>
+                <div class="timeline-item fade-up">
+                    <h3 class="text-xl font-bold text-white">GSoC <span class="text-cyan-400">@ Ardupilot</span></h3>
+                    <p class="text-sm font-mono text-slate mb-3">May 2022 - Aug 2024</p>
+                    <p class="text-slate leading-relaxed">Designed and implemented a high-altitude non-GPS position estimation algorithm for UAVs using transformer-based localization and computer vision. <br> Updated ROS integration for non-GPS navigation and mentored GSoC students.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section-container fade-up">
+            <h2 class="section-heading">Some Things I've Built</h2>
+            
+            <div class="featured-project ssos fade-up">
+                <div class="project-content z-10">
+                    <p class="text-cyan-400 font-mono text-sm">Featured Project</p>
+                    <h3 class="text-2xl font-bold text-white mb-4">Space Station OS - GNC & AOCS</h3>
+                    <div class="bg-light-navy p-6 rounded-md shadow-lg">
+                        <p class="leading-relaxed">Contributions to the Guidance, Navigation, and Control (GNC) and Attitude & Orbit Control Systems (AOCS) for an open-source space station operating system. My work involves designing and implementing the behavior tree architecture for autonomous operations and GNC & AOCS physics backend and SSOS SITL.</p>
+                    </div>
+                    <ul class="flex flex-wrap gap-x-4 gap-y-2 text-sm font-mono text-slate mt-4 project-tech-list">
+                        <li>C++</li><li>ROS2</li><li>GNC/AOCS</li><li>Behavior Trees</li><li>Simulation</li>
+                    </ul>
+                </div>
+                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden">
+                    <canvas id="space-station-canvas"></canvas>
+                </div>
+            </div>
+
+            <div class="featured-project fade-up">
+                <div class="project-content z-10">
+                    <p class="text-cyan-400 font-mono text-sm">Featured Project</p>
+                    <h3 class="text-2xl font-bold text-white mb-4">Humanoid Control & Teleoperation</h3>
+                    <div class="bg-light-navy p-6 rounded-md shadow-lg">
+                        <p class="leading-relaxed">A comprehensive software and hardware stack for a bipedal humanoid for Summon. The product involves real-time AI-assisted long-range teleoperation, advanced control systems (RL, PINN, VLAs), and bimanual mobile manipulation, tested & simulated in Isaac Sim and deployed on hardware.</p>
+                    </div>
+                    <ul class="flex flex-wrap gap-x-4 gap-y-2 text-sm font-mono text-slate mt-4 project-tech-list">
+                        <li>Isaac Sim</li><li>RL (PPO, SAC)</li><li>PINN</li><li>ROS2</li><li>C++</li><li>VLA Models</li>
+                    </ul>
+                </div>
+                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden">
+                   <canvas id="humanoid-canvas"></canvas>
+                </div>
+            </div>
+
+            <div class="featured-project fade-up">
+                <div class="project-content z-10">
+                    <p class="text-cyan-400 font-mono text-sm">Featured Project</p>
+                    <h3 class="text-2xl font-bold text-white mb-4">High-Altitude Non-GPS Navigation</h3>
+                    <div class="bg-light-navy p-6 rounded-md shadow-lg">
+                        <p class="leading-relaxed">A novel GSoC project for Ardupilot to enable UAV position estimation at high altitudes without GPS. It leverages a downward-facing camera, fusing a transformer-based Visual Positioning System (VPS) with Visual-Inertial Odometry (VIO) for precise localization against satellite imagery.</p>
+                    </div>
+                    <ul class="flex flex-wrap gap-x-4 gap-y-2 text-sm font-mono text-slate mt-4 project-tech-list">
+                        <li>C++</li><li>Python</li><li>OpenCV</li><li>PyTorch</li><li>UAVs</li><li>Ardupilot</li>
+                    </ul>
+                </div>
+                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden">
+                    <canvas id="drone-canvas"></canvas>
+                </div>
+            </div>
+
+            <h3 class="text-2xl text-white font-bold text-center mt-20 mb-10 fade-up">Other Noteworthy Projects</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-light-navy p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300 fade-up">
+                    <h4 class="text-lg font-bold text-white mb-2">Drone Swarm Show System</h4>
+                    <p class="text-sm mb-4 leading-relaxed">Designed and implemented ArduPilot-based synchronized drone swarm control and long-range wireless comms for drone light shows.</p>
+                </div>
+                <div class="bg-light-navy p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300 fade-up">
+                    <h4 class="text-lg font-bold text-white mb-2">ISRO CanSat</h4>
+                    <p class="text-sm mb-4 leading-relaxed">National finalist entry for the ISRO CANSAT competition. Developed a satellite with active 2-axis attitude stabilization using reaction wheels and LQR controllers.</p>
+                </div>
+                <div class="bg-light-navy p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300 fade-up">
+                    <h4 class="text-lg font-bold text-white mb-2">Precision Landing System</h4>
+                    <p class="text-sm mb-4 leading-relaxed">Built a monocular vision-based landing system for UAVs using PyMavlink, grid map, and OpenCV for high-accuracy landings.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentorship Section -->
+        <section id="mentorship" class="section-container fade-up">
+            <h2 class="section-heading">Mentorship & Community</h2>
+            <div class="space-y-4">
+                <div class="bg-light-navy p-6 rounded-md">
+                    <p class="text-cyan-400 font-mono text-sm mb-1">Google Summer of Code (GSoC) & Ardupilot</p>
+                    <p class="text-white font-semibold text-lg mb-2">Guiding the Next Generation of Developers</p>
+                    <p class="text-slate leading-relaxed">Actively contributing and mentoring contributors in the Ardupilot community, focusing on projects like, non-GPS absolute LiDAR positioning and the implementation of Software-in-the-Loop (SITL) with Reinforcement Learning for advanced autonomous systems.</p>
+                </div>
+            </div>
+        </section>
+
+ <!-- Talks Section -->
+        <section id="talks" class="section-container fade-up">
+            <h2 class="section-heading">Publications & Talks</h2>
+            <div class="space-y-4">
+                <div class="bg-light-navy p-6 rounded-md">
+                    <p class="text-cyan-400 font-mono text-sm mb-1">Ardupilot Developer Conference 2024, Japan</p>
+                    <p class="text-white font-semibold text-lg">Talk: High Altitude Non-GPS Position Estimation</p>
+                </div>
+                <div class="bg-light-navy p-6 rounded-md">
+                    <p class="text-cyan-400 font-mono text-sm mb-1">PX4 Developer Summit 2023, USA</p>
+                    <p class="text-white font-semibold text-lg">Talk: Autonomous Non-GPS Control for Indoor Navigation</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Fun Section -->
+<section id="fun" class="section-container fade-up">
+  <div id="fun-section-container">
+    <canvas id="game-of-life-canvas"></canvas>
+    <h2 class="section-heading">What I Do For Fun</h2>
+    <p class="text-center text-lg mb-10 max-w-2xl mx-auto">
+      When I'm not building robots or pondering the universe, I enjoy diving into other systems; whether they're found in novels, games, or global affairs.
+    </p>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="fun-card">
+        <h3 class="text-xl font-bold text-white mb-4">Favorite Reads</h3>
+        <ul class="space-y-3 font-mono text-sm">
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Fyodor Dostoevsky – Crime and Punishment</span>
+              <p class="text-slate text-xs">For its profound exploration of guilt and redemption.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Franz Kafka – The Metamorphosis</span>
+              <p class="text-slate text-xs">For its unsettling exploration of identity and alienation.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Stephen King – Pet Sematary</span>
+              <p class="text-slate text-xs">For its haunting look at grief and the cost of tampering with death.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Anurag Mathur – The Inscrutable Americans</span>
+              <p class="text-slate text-xs">A humorous take on cultural clash and self-discovery.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Dan Brown – The Da Vinci Code</span>
+              <p class="text-slate text-xs">For its fast-paced mix of history, art, and conspiracy.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="fun-card">
+        <h3 class="text-xl font-bold text-white mb-4">Favorite Games</h3>
+        <ul class="space-y-3 font-mono text-sm">
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Red Dead Redemption 2</span>
+              <p class="text-slate text-xs">An immersive open-world Western epic.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Outlast 2</span>
+              <p class="text-slate text-xs">For its atmospheric horror and tense survival gameplay.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Judgement</span>
+              <p class="text-slate text-xs">A story-driven crime thriller set in Kamurocho.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">Kerbal Space Program</span>
+              <p class="text-slate text-xs">A playground for orbital mechanics and rocket science.</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <span class="text-cyan-400 mr-3 mt-1">▹</span>
+            <div>
+              <span class="text-light-slate">God of War Series</span>
+              <p class="text-slate text-xs">For its rich narrative and Norse & Greek mythology.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section-container text-center fade-up">
+            <h2 class="text-3xl font-bold text-white text-center m-0 p-0 before:hidden">What's Next?</h2>
+            <p class="text-xl mt-6 mb-8 max-w-xl mx-auto leading-relaxed">I'm always seeking new challenges and opportunities to collaborate on ambitious projects. Whether you have a question, a proposal, or just want to say hello, my inbox is always open.</p>
+            <a href="mailto:sharma.sanket272@gmail.com" class="inline-block px-12 py-4 border border-cyan-400 text-cyan-400 rounded hover:bg-cyan-400/10 transition-colors duration-300 font-mono text-lg">Say Hello</a>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-6 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://github.com/snktshrma" target="_blank" rel="noopener noreferrer" class="text-slate hover:text-cyan-400 transition-transform duration-300 transform hover:scale-110">
+                    <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><title>GitHub</title><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/sanket-sharma-2002" target="_blank" rel="noopener noreferrer" class="text-slate hover:text-cyan-400 transition-transform duration-300 transform hover:scale-110">
+                     <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><title>LinkedIn</title><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+            <p class="font-mono text-sm text-slate">&copy; 2024 Designed & Built by Gemini & me ;)</p>
+        </footer>
+    </div>
+
     <script>
-        AOS.init();
+    // --- INITIALIZATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        initPreloader();
+        initCursor();
+        initHeaderScroll();
+        initScrollAnimations();
+        initMobileMenu();
+        initThreeJS();
+        initNebula();
+        initGameOfLife();
+        initSpaceStation();
+        initHumanoidAnimation();
+        initDroneAnimation();
+    });
+
+    // --- PRELOADER ---
+    function initPreloader() {
+        const preloader = document.getElementById('preloader');
+        window.addEventListener('load', () => {
+            preloader.classList.add('loaded');
+            document.body.style.overflow = 'auto';
+        });
+        document.body.style.overflow = 'hidden';
+    }
+
+    // --- CUSTOM CURSOR ---
+    function initCursor() {
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            cursorOutline.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+        document.querySelectorAll('a, button, canvas').forEach(el => {
+            el.addEventListener('mouseover', () => cursorOutline.classList.add('cursor-grow'));
+            el.addEventListener('mouseout', () => cursorOutline.classList.remove('cursor-grow'));
+        });
+    }
+
+    // --- HEADER SCROLL ---
+    function initHeaderScroll() {
+        let lastScrollTop = 0;
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                header.style.top = '-80px';
+            } else {
+                header.style.top = '0';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    }
+    
+    // --- SCROLL ANIMATIONS ---
+    function initScrollAnimations() {
+        const sections = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+    }
+
+    // --- MOBILE MENU ---
+    function initMobileMenu() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.onclick = () => mobileMenu.classList.toggle('hidden');
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+    }
+
+    // --- INTERACTIVE NEBULA ---
+    function initNebula() {
+        const container = document.getElementById('interactive-visual-container');
+        if (!container) return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 300;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('interactive-visual-canvas'), alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+
+        const particleCount = 7000;
+        const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3);
+        const velocities = [];
+        const baseColor = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue('--cyan').trim());
+
+        for (let i = 0; i < particleCount; i++) {
+            const phi = Math.acos(-1 + (2 * i) / particleCount);
+            const theta = Math.sqrt(particleCount * Math.PI) * phi;
+            const radius = 100;
+
+            const vertex = new THREE.Vector3().setFromSphericalCoords(radius * (0.5 + Math.random() * 0.5), phi, theta);
+            vertex.toArray(positions, i * 3);
+
+            const color = new THREE.Color(baseColor);
+            color.lerp(new THREE.Color(0xaa00ff), Math.random());
+            color.toArray(colors, i * 3);
+
+            velocities.push(new THREE.Vector3(0, 0, 0));
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 1.2,
+            vertexColors: true,
+            blending: THREE.AdditiveBlending,
+            transparent: true,
+            opacity: 0.8
+        });
+
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        const mouse = new THREE.Vector3(10000, 10000, 1);
+        const raycaster = new THREE.Raycaster();
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+
+        container.addEventListener('mousemove', (event) => {
+            const rect = container.getBoundingClientRect();
+            const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+            raycaster.setFromCamera({x, y}, camera);
+            raycaster.ray.intersectPlane(plane, mouse);
+        });
+        container.addEventListener('mouseleave', () => {
+            mouse.x = 10000;
+            mouse.y = 10000;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const positions = geometry.attributes.position.array;
+            for (let i = 0; i < particleCount; i++) {
+                const ix = i * 3;
+                const iy = i * 3 + 1;
+                const iz = i * 3 + 2;
+
+                const particle = new THREE.Vector3(positions[ix], positions[iy], positions[iz]);
+                const distSq = particle.distanceToSquared(mouse);
+
+                if (distSq < 4000) {
+                    const force = 250 / distSq;
+                    const direction = new THREE.Vector3().subVectors(particle, mouse).normalize();
+                    velocities[i].add(direction.multiplyScalar(force));
+                }
+
+                velocities[i].multiplyScalar(0.96);
+                positions[ix] += velocities[i].x;
+                positions[iy] += velocities[i].y;
+                positions[iz] += velocities[i].z;
+            }
+            geometry.attributes.position.needsUpdate = true;
+            
+            points.rotation.y += 0.0005;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
+    
+    // --- GAME OF LIFE ---
+    function initGameOfLife() {
+        const canvas = document.getElementById('game-of-life-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const resolution = 20;
+        let cols, rows, grid, nextGrid;
+
+        function setup() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            cols = Math.floor(canvas.width / resolution);
+            rows = Math.floor(canvas.height / resolution);
+            grid = new Array(cols).fill(null).map(() => new Array(rows).fill(0).map(() => Math.floor(Math.random() * 2)));
+            nextGrid = new Array(cols).fill(null).map(() => new Array(rows).fill(0));
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let col = 0; col < cols; col++) {
+                for (let row = 0; row < rows; row++) {
+                    if (grid[col][row] === 1) {
+                        ctx.fillStyle = 'var(--cyan)';
+                        ctx.fillRect(col * resolution, row * resolution, resolution, resolution);
+                    }
+                }
+            }
+        }
+
+        function update() {
+            for (let col = 0; col < cols; col++) {
+                for (let row = 0; row < rows; row++) {
+                    let neighbors = 0;
+                    for (let i = -1; i < 2; i++) {
+                        for (let j = -1; j < 2; j++) {
+                            if (i === 0 && j === 0) continue;
+                            const x = col + i;
+                            const y = row + j;
+                            if (x >= 0 && x < cols && y >= 0 && y < rows) {
+                                neighbors += grid[x][y];
+                            }
+                        }
+                    }
+                    const state = grid[col][row];
+                    if (state === 1 && (neighbors < 2 || neighbors > 3)) {
+                        nextGrid[col][row] = 0;
+                    } else if (state === 0 && neighbors === 3) {
+                        nextGrid[col][row] = 1;
+                    } else {
+                        nextGrid[col][row] = state;
+                    }
+                }
+            }
+            grid = nextGrid.map(arr => [...arr]);
+        }
+
+        function loop() {
+            update();
+            draw();
+        }
+        
+        setup();
+        setInterval(loop, 100);
+        window.addEventListener('resize', setup);
+    }
+
+    // --- SPACE STATION ANIMATION ---
+    function initSpaceStation() {
+        const canvas = document.getElementById('space-station-canvas');
+        if (!canvas) return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+        
+        const starGeometry = new THREE.SphereGeometry(100, 64, 64);
+        const starMaterial = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load('https://stemkoski.github.io/Three.js/images/galaxy_starfield.png'),
+            side: THREE.BackSide
+        });
+        const starfield = new THREE.Mesh(starGeometry, starMaterial);
+        scene.add(starfield);
+
+        const textureLoader = new THREE.TextureLoader();
+        const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            map: textureLoader.load('https://stemkoski.github.io/Three.js/images/earth-day.jpg'),
+            specularMap: textureLoader.load('https://stemkoski.github.io/Three.js/images/earth-specular.jpg'),
+            specular: new THREE.Color('grey')
+        });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        scene.add(earth);
+        
+        const cloudGeometry = new THREE.SphereGeometry(2.02, 32, 32);
+        const cloudMaterial = new THREE.MeshPhongMaterial({
+            map: textureLoader.load('https://stemkoski.github.io/Three.js/images/earth-clouds.png'),
+            transparent: true
+        });
+        const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+        scene.add(clouds);
+
+        const station = new THREE.Group();
+        const silverMaterial = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.9, roughness: 0.2 });
+        const solarPanelMaterial = new THREE.MeshBasicMaterial({ color: 0x050a30, side: THREE.DoubleSide });
+
+        const truss = new THREE.Mesh(new THREE.BoxGeometry(3, 0.1, 0.1), silverMaterial);
+        station.add(truss);
+        const centralModule = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.5, 16), silverMaterial);
+        centralModule.rotation.z = Math.PI / 2;
+        station.add(centralModule);
+
+        for (let i = 0; i < 2; i++) {
+            const arm = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.05, 0.05), silverMaterial);
+            arm.position.x = (i === 0 ? 1 : -1) * 0.9;
+            const panel = new THREE.Mesh(new THREE.BoxGeometry(1, 0.01, 0.5), solarPanelMaterial);
+            panel.position.x = (i === 0 ? 1 : -1) * 0.5;
+            arm.add(panel);
+            station.add(arm);
+        }
+        
+        station.position.x = 3.5;
+        station.rotation.y = Math.PI / 4;
+        
+        const pivot = new THREE.Group();
+        pivot.add(station);
+        scene.add(pivot);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            earth.rotation.y += 0.001;
+            clouds.rotation.y += 0.0012;
+            pivot.rotation.y += 0.005;
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
+
+    // --- HUMANOID ANIMATION ---
+    function initHumanoidAnimation() {
+        const canvas = document.getElementById('humanoid-canvas');
+        if (!canvas) return;
+        // Placeholder for humanoid animation
+    }
+
+    // --- DRONE ANIMATION ---
+    function initDroneAnimation() {
+        const canvas = document.getElementById('drone-canvas');
+        if (!canvas) return;
+        // Placeholder for drone animation
+    }
+
+    // --- THREE.JS BACKGROUND ---
+    function initThreeJS() {
+        let scene, camera, renderer, points, galaxies = [], comets = [], shootingStars = [], nebulae = [];
+        const mouse = new THREE.Vector2();
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 50;
+
+        renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const starGeometry = new THREE.BufferGeometry();
+        const starPositions = [];
+        for (let i = 0; i < 10000; i++) {
+            starPositions.push((Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400);
+        }
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0x8892b0, size: 0.2, transparent: true, blending: THREE.AdditiveBlending });
+        points = new THREE.Points(starGeometry, starMaterial);
+        scene.add(points);
+
+        const textureLoader = new THREE.TextureLoader();
+        
+        const galaxyTexture = textureLoader.load('https://assets.codepen.io/3685267/galaxy.png', 
+            () => {}, undefined, () => console.error('Error loading galaxy texture'));
+        for (let i = 0; i < 15; i++) {
+            const galaxyMaterial = new THREE.SpriteMaterial({ map: galaxyTexture, color: 0x6a7a9f, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.3, rotation: Math.random() * Math.PI * 2 });
+            const galaxy = new THREE.Sprite(galaxyMaterial);
+            galaxy.position.set((Math.random() - 0.5) * 600, (Math.random() - 0.5) * 600, (Math.random() - 0.5) * 600 - 300);
+            const scale = Math.random() * 30 + 15;
+            galaxy.scale.set(scale, scale, scale);
+            scene.add(galaxy);
+            galaxies.push(galaxy);
+        }
+
+        const nebulaTexture = textureLoader.load('https://assets.codepen.io/3685267/nebula.png',
+            () => {}, undefined, () => console.error('Error loading nebula texture'));
+        for (let i = 0; i < 5; i++) {
+            const nebulaMaterial = new THREE.SpriteMaterial({ map: nebulaTexture, color: new THREE.Color(Math.random() * 0.5 + 0.2, Math.random() * 0.5 + 0.2, Math.random() * 0.5 + 0.5), blending: THREE.AdditiveBlending, transparent: true, opacity: 0.15 });
+            const nebula = new THREE.Sprite(nebulaMaterial);
+            nebula.position.set((Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500, (Math.random() - 0.5) * 500 - 400);
+            const scale = Math.random() * 200 + 100;
+            nebula.scale.set(scale, scale, scale);
+            nebula.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+            scene.add(nebula);
+            nebulae.push(nebula);
+        }
+
+        function createComet() {
+            const headGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+            const headMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true });
+            const comet = new THREE.Mesh(headGeometry, headMaterial);
+            
+            comet.position.set((Math.random() - 0.5) * 150, Math.random() > 0.5 ? 100 : -100, (Math.random() - 0.5) * 150);
+            comet.velocity = new THREE.Vector3((Math.random() - 0.5) * 0.1, comet.position.y > 0 ? -0.4 : 0.4, (Math.random() - 0.5) * 0.1);
+            comet.life = 1000;
+            scene.add(comet);
+            
+            const tailMaterial = new THREE.PointsMaterial({ color: 0xaaaaee, size: 0.4, transparent: true });
+            const tailGeometry = new THREE.BufferGeometry();
+            const tailPositions = new Float32Array(150 * 3);
+            tailGeometry.setAttribute('position', new THREE.BufferAttribute(tailPositions, 3));
+            
+            comet.tail = new THREE.Points(tailGeometry, tailMaterial);
+            comet.tail.particleIndex = 0;
+            scene.add(comet.tail);
+            comets.push(comet);
+        }
+        setInterval(createComet, 7000);
+
+        function createShootingStar() {
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute([0,0,0, 0,0,-5], 3));
+            const material = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
+            const star = new THREE.Line(geometry, material);
+            
+            star.position.set((Math.random() - 0.5) * 300, (Math.random() - 0.5) * 300, -200);
+            star.velocity = new THREE.Vector3(Math.random() * 4 - 2, Math.random() * 4 - 2, 10);
+            star.life = 100;
+            scene.add(star);
+            shootingStars.push(star);
+        }
+        setInterval(createShootingStar, 400);
+
+
+        window.addEventListener('resize', onWindowResize, false);
+        document.addEventListener('mousemove', onMouseMove, false);
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            points.rotation.x += 0.00005 + (mouse.y * 0.0004);
+            points.rotation.y += 0.00005 + (mouse.x * 0.0004);
+
+            galaxies.forEach(g => { g.material.rotation += 0.001; });
+            nebulae.forEach(n => { n.rotation.z += 0.0002; });
+
+            comets.forEach((comet, index) => {
+                comet.life--;
+                comet.position.add(comet.velocity);
+                const opacity = Math.max(0, comet.life / 1000);
+                comet.material.opacity = opacity;
+                comet.tail.material.opacity = opacity * 0.5;
+                const positions = comet.tail.geometry.attributes.position.array;
+                const idx = comet.tail.particleIndex;
+                positions[idx * 3] = comet.position.x;
+                positions[idx * 3 + 1] = comet.position.y;
+                positions[idx * 3 + 2] = comet.position.z;
+                comet.tail.particleIndex = (comet.tail.particleIndex + 1) % 150;
+                comet.tail.geometry.attributes.position.needsUpdate = true;
+                if (comet.life <= 0) {
+                    scene.remove(comet);
+                    scene.remove(comet.tail);
+                    comets.splice(index, 1);
+                }
+            });
+
+            shootingStars.forEach((star, index) => {
+                star.life--;
+                star.position.add(star.velocity);
+                star.material.opacity = Math.max(0, star.life / 100);
+                if (star.life <= 0) {
+                    scene.remove(star);
+                    shootingStars.splice(index, 1);
+                }
+            });
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
     </script>
 </body>
 </html>
