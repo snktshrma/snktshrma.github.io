@@ -16,6 +16,13 @@
             --light-slate: #a8b2d1;
             --white: #e6f1ff;
             --cyan: #06b6d4;
+            --cyan-dark: #0891b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -24,6 +31,7 @@
             background-color: var(--dark-navy);
             color: var(--slate);
             cursor: none;
+            overflow-x: hidden;
         }
 
         /* Preloader */
@@ -33,12 +41,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--dark-navy);
+            background: linear-gradient(135deg, var(--dark-navy) 0%, #0d1b2a 100%);
             z-index: 10001;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
         }
         #preloader.loaded {
             opacity: 0;
@@ -51,6 +60,7 @@
             border-top: 4px solid var(--cyan);
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -65,6 +75,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            opacity: 0.4;
         }
 
         /* Custom mouse cursor */
@@ -74,30 +85,52 @@
             transform: translate(-50%, -50%);
             border-radius: 50%;
             z-index: 10000;
-            transition: all 0.15s ease-out;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .cursor-dot {
             width: 8px;
             height: 8px;
             background-color: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
         }
         .cursor-outline {
             width: 40px;
             height: 40px;
             border: 2px solid var(--cyan);
+            opacity: 0.5;
         }
         .cursor-grow {
             transform: scale(2.5) translate(-20%, -20%);
             background-color: var(--cyan-glow);
             border: none;
+            opacity: 0.3;
         }
         
         /* Header */
         header {
-            background: rgba(10, 25, 47, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: top 0.3s ease-in-out;
+            background: rgba(10, 25, 47, 0.9);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+        }
+        header nav a {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        header nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        header nav a:hover::after {
+            width: 100%;
         }
 
         /* Content wrapper */
@@ -106,25 +139,63 @@
             z-index: 1;
         }
 
+        /* Section separators */
+        section {
+            position: relative;
+        }
+        section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3), transparent);
+            opacity: 0.5;
+        }
+        section:last-child::after {
+            display: none;
+        }
+
         /* Scroll animations */
         .fade-up {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .fade-up.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .fade-in-left.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .fade-in-right.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
         /* Section styles */
         h2.section-heading {
-            font-size: clamp(26px, 5vw, 32px);
+            font-size: clamp(28px, 5vw, 36px);
             color: var(--white);
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             position: relative;
-            padding-left: 20px;
+            padding-left: 25px;
+            letter-spacing: -0.5px;
         }
         h2.section-heading::before {
             content: '';
@@ -132,15 +203,31 @@
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 4px;
+            width: 5px;
             height: 100%;
-            background-color: var(--cyan);
-            border-radius: 2px;
+            background: linear-gradient(180deg, var(--cyan), var(--cyan-dark));
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
         }
         .section-container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 100px 1rem;
+            padding: 120px 2rem;
+        }
+        
+        /* Hero Section */
+        #home {
+            position: relative;
+        }
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+            pointer-events: none;
         }
         
         /* Timeline */
@@ -153,14 +240,19 @@
             content: '';
             position: absolute;
             width: 2px;
-            background-color: var(--light-navy);
+            background: linear-gradient(180deg, var(--cyan), var(--light-navy));
             top: 0;
             bottom: 0;
             left: 30px;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
         }
         .timeline-item {
-            padding: 10px 0 30px 70px;
+            padding: 20px 0 40px 70px;
             position: relative;
+            transition: transform 0.3s ease;
+        }
+        .timeline-item:hover {
+            transform: translateX(5px);
         }
         .timeline-item::after {
             content: '';
@@ -168,28 +260,101 @@
             width: 20px;
             height: 20px;
             left: 21px;
-            background-color: var(--dark-navy);
+            background: linear-gradient(135deg, var(--dark-navy), var(--light-navy));
             border: 3px solid var(--cyan);
-            top: 15px;
+            top: 20px;
             border-radius: 50%;
             z-index: 1;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .timeline-item:hover::after {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.8);
         }
 
         /* Featured Project Card */
         .featured-project {
             display: grid;
-            gap: 10px;
+            gap: 20px;
             grid-template-columns: repeat(12, 1fr);
             align-items: center;
-            margin-bottom: 70px;
+            margin-bottom: 100px;
+            position: relative;
+            transition: transform 0.3s ease;
         }
-        .project-content { grid-column: 1 / 7; grid-row: 1 / -1; text-align: left; }
-        .project-image { grid-column: 7 / -1; grid-row: 1 / -1; }
+        .featured-project:hover {
+            transform: translateY(-5px);
+        }
+        .project-content { 
+            grid-column: 1 / 7; 
+            grid-row: 1 / -1; 
+            text-align: left; 
+            z-index: 10;
+            position: relative;
+        }
+        .project-image { 
+            grid-column: 7 / -1; 
+            grid-row: 1 / -1; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .featured-project:hover .project-image {
+            transform: scale(1.02);
+        }
         .featured-project.ssos .project-content { grid-column: 1 / 8; }
         .featured-project.ssos .project-image { grid-column: 8 / -1; }
         .featured-project:nth-of-type(even) .project-content { grid-column: 7 / -1; text-align: right; }
         .featured-project:nth-of-type(even) .project-image { grid-column: 1 / 7; }
         .featured-project:nth-of-type(even) .project-tech-list { justify-content: flex-end; }
+        
+        .project-content .bg-light-navy {
+            background: linear-gradient(135deg, var(--light-navy) 0%, rgba(17, 34, 64, 0.8) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .featured-project:hover .project-content .bg-light-navy {
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.2);
+        }
+        
+        .project-tech-list li {
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .project-tech-list li:hover {
+            color: var(--cyan);
+            transform: translateY(-2px);
+        }
+        
+        /* Other Projects Grid */
+        .other-projects-grid .bg-light-navy {
+            background: linear-gradient(135deg, var(--light-navy) 0%, rgba(17, 34, 64, 0.8) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .other-projects-grid .bg-light-navy::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        .other-projects-grid .bg-light-navy:hover::before {
+            left: 100%;
+        }
+        .other-projects-grid .bg-light-navy:hover {
+            transform: translateY(-8px);
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
+        }
         
         /* Interactive Visual Canvas */
         #interactive-visual-container {
@@ -198,6 +363,15 @@
             max-width: 350px;
             height: 350px;
             margin: auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.1);
+            transition: all 0.3s ease;
+        }
+        #interactive-visual-container:hover {
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.2);
         }
         #interactive-visual-canvas {
             width: 100% !important;
@@ -218,20 +392,172 @@
             opacity: 0.1;
         }
         .fun-card {
-            background-color: var(--light-navy);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: linear-gradient(135deg, var(--light-navy) 0%, rgba(17, 34, 64, 0.9) 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .fun-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        .fun-card:hover::before {
+            transform: scaleX(1);
         }
         .fun-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.2);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+        
+        /* Buttons */
+        a[href^="#"], a[href^="mailto:"], a[href*=".pdf"] {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        a[href^="#"]:hover, a[href^="mailto:"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+        }
+        a.group span.absolute {
+            z-index: 0;
+        }
+        a.group span.relative {
+            z-index: 10;
+        }
+        
+        /* Contact Section */
+        #contact {
+            text-align: center;
+        }
+        #contact h2 {
+            background: linear-gradient(135deg, var(--white) 0%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(6, 182, 212, 0.1);
+            background: rgba(10, 25, 47, 0.5);
+        }
+        footer a {
+            transition: all 0.3s ease;
+        }
+        footer a:hover {
+            transform: translateY(-3px) scale(1.1);
+            filter: drop-shadow(0 0 8px var(--cyan));
+        }
+        
+        /* Mentorship & Talks Cards */
+        .bg-light-navy {
+            background: linear-gradient(135deg, var(--light-navy) 0%, rgba(17, 34, 64, 0.9) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            transition: all 0.3s ease;
+        }
+        .bg-light-navy:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        /* Mobile Menu Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .section-container {
+                padding: 80px 1rem;
+            }
+            .featured-project {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .project-content, .project-image {
+                grid-column: 1 / -1 !important;
+            }
+            .project-content {
+                text-align: left !important;
+            }
+            .project-tech-list {
+                justify-content: flex-start !important;
+            }
+            h2.section-heading {
+                font-size: 24px;
+                margin-bottom: 30px;
+            }
+            #home h2 {
+                font-size: 2.5rem;
+            }
+            #home h3 {
+                font-size: 2rem;
+            }
+            .cursor-dot, .cursor-outline {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
+        }
+        
+        /* Smooth scrolling indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(6, 182, 212, 0.2);
+            z-index: 10002;
+            transform-origin: left;
+        }
+        .scroll-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: var(--scroll-progress, 0%);
+            background: linear-gradient(90deg, var(--cyan), var(--cyan-dark));
+            transition: width 0.1s ease;
         }
 
     </style>
 </head>
 <body class="bg-gray-900 text-white">
     <div id="preloader"><div class="loader"></div></div>
+    <div class="scroll-indicator"></div>
     
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
@@ -255,25 +581,39 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </nav>
-            <div id="mobile-menu" class="hidden md:hidden bg-light-navy">
-                <a href="#about" class="block py-3 px-6 text-sm hover:bg-gray-700">About</a>
-                <a href="#experience" class="block py-3 px-6 text-sm hover:bg-gray-700">Experience</a>
-                <a href="#projects" class="block py-3 px-6 text-sm hover:bg-gray-700">Projects</a>
-                <a href="#mentorship" class="block py-3 px-6 text-sm hover:bg-gray-700">Mentorship</a>
-                <a href="#fun" class="block py-3 px-6 text-sm hover:bg-gray-700">For Fun</a>
-                <a href="#contact" class="block py-3 px-6 text-sm hover:bg-gray-700">Contact</a>
-                <a href="Resume-1.pdf" target="_blank" class="block py-3 px-6 text-sm hover:bg-gray-700">Resume</a>
+            <div id="mobile-menu" class="hidden md:hidden bg-light-navy border-t border-cyan-400/20 transition-all duration-300">
+                <a href="#about" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200 border-b border-cyan-400/10">About</a>
+                <a href="#experience" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200 border-b border-cyan-400/10">Experience</a>
+                <a href="#projects" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200 border-b border-cyan-400/10">Projects</a>
+                <a href="#mentorship" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200 border-b border-cyan-400/10">Mentorship</a>
+                <a href="#fun" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200 border-b border-cyan-400/10">For Fun</a>
+                <a href="#contact" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200 border-b border-cyan-400/10">Contact</a>
+                <a href="Resume-1.pdf" target="_blank" class="block py-3 px-6 text-sm hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors duration-200">Resume</a>
             </div>
         </header>
 
         <!-- Hero Section -->
         <section id="home" class="min-h-screen flex items-center section-container">
-            <div class="fade-up is-visible">
-                <h1 class="text-lg text-cyan-400 font-mono mb-4">Hi, my name is</h1>
-                <h2 class="text-4xl md:text-7xl font-bold text-white text-left m-0 p-0">Sanket Sharma.</h2>
-                <h3 class="text-4xl md:text-6xl font-bold text-slate mt-2">I build things for the cosmos.</h3>
-                <p class="mt-6 max-w-xl text-lg leading-relaxed">I'm a mechatronics engineer specializing in control systems, robotics, and the application of physics principles to solve complex technological challenges. Currently, I'm the Co-founder and CTO at Summon, pioneering advancements in humanoid robotics.</p>
-                <a href="#projects" class="inline-block mt-8 px-8 py-4 border border-cyan-400 text-cyan-400 rounded hover:bg-cyan-400/10 transition-colors duration-300 font-mono">Check out my work!</a>
+            <div class="fade-up is-visible w-full">
+                <h1 class="text-lg text-cyan-400 font-mono mb-4 animate-pulse">Hi, my name is</h1>
+                <h2 class="text-4xl md:text-7xl font-bold text-white text-left m-0 p-0 leading-tight mb-2">
+                    <span class="inline-block hover:text-cyan-400 transition-colors duration-300">Sanket Sharma</span>.
+                </h2>
+                <h3 class="text-3xl md:text-6xl font-bold text-slate mt-2 leading-tight">
+                    I build things for the <span class="text-cyan-400">cosmos</span>.
+                </h3>
+                <p class="mt-8 max-w-2xl text-lg leading-relaxed text-light-slate">
+                    I'm a mechatronics engineer specializing in control systems, robotics, and the application of physics principles to solve complex technological challenges. Currently, I'm the Co-founder and CTO at <span class="text-cyan-400 font-semibold">Summon</span>, pioneering advancements in humanoid robotics.
+                </p>
+                <div class="mt-10 flex flex-wrap gap-4">
+                    <a href="#projects" class="group inline-block px-8 py-4 border-2 border-cyan-400 text-cyan-400 rounded font-mono text-sm relative overflow-hidden transition-all duration-300 hover:text-white">
+                        <span class="relative z-10">Check out my work!</span>
+                        <span class="absolute inset-0 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                    </a>
+                    <a href="#contact" class="inline-block px-8 py-4 border-2 border-slate text-slate rounded font-mono text-sm hover:border-cyan-400 hover:text-cyan-400 transition-all duration-300">
+                        Get in touch
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -331,8 +671,10 @@
             
             <div class="featured-project ssos fade-up">
                 <div class="project-content z-10">
-                    <p class="text-cyan-400 font-mono text-sm">Featured Project</p>
-                    <h3 class="text-2xl font-bold text-white mb-4">Space Station OS - GNC & AOCS</h3>
+                    <p class="text-cyan-400 font-mono text-sm mb-2">Featured Project</p>
+                    <h3 class="text-2xl font-bold text-white mb-4 group">
+                        <span class="group-hover:text-cyan-400 transition-colors duration-300">Space Station OS - GNC & AOCS</span>
+                    </h3>
                     <div class="bg-light-navy p-6 rounded-md shadow-lg">
                         <p class="leading-relaxed">Contributions to the Guidance, Navigation, and Control (GNC) and Attitude & Orbit Control Systems (AOCS) for an open-source space station operating system. My work involves designing and implementing the behavior tree architecture for autonomous operations and GNC & AOCS physics backend and SSOS SITL.</p>
                     </div>
@@ -340,15 +682,18 @@
                         <li>C++</li><li>ROS2</li><li>GNC/AOCS</li><li>Behavior Trees</li><li>Simulation</li>
                     </ul>
                 </div>
-                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden">
+                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden relative group">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-navy/50 to-transparent z-10 pointer-events-none"></div>
                     <canvas id="space-station-canvas"></canvas>
                 </div>
             </div>
 
             <div class="featured-project fade-up">
                 <div class="project-content z-10">
-                    <p class="text-cyan-400 font-mono text-sm">Featured Project</p>
-                    <h3 class="text-2xl font-bold text-white mb-4">Humanoid Control & Teleoperation</h3>
+                    <p class="text-cyan-400 font-mono text-sm mb-2">Featured Project</p>
+                    <h3 class="text-2xl font-bold text-white mb-4 group">
+                        <span class="group-hover:text-cyan-400 transition-colors duration-300">Humanoid Control & Teleoperation</span>
+                    </h3>
                     <div class="bg-light-navy p-6 rounded-md shadow-lg">
                         <p class="leading-relaxed">A comprehensive software and hardware stack for a bipedal humanoid for Summon. The product involves real-time AI-assisted long-range teleoperation, advanced control systems (RL, PINN, VLAs), and bimanual mobile manipulation, tested & simulated in Isaac Sim and deployed on hardware.</p>
                     </div>
@@ -356,15 +701,18 @@
                         <li>Isaac Sim</li><li>RL (PPO, SAC)</li><li>PINN</li><li>ROS2</li><li>C++</li><li>VLA Models</li>
                     </ul>
                 </div>
-                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden">
+                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden relative group">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-navy/50 to-transparent z-10 pointer-events-none"></div>
                    <canvas id="humanoid-canvas"></canvas>
                 </div>
             </div>
 
             <div class="featured-project fade-up">
                 <div class="project-content z-10">
-                    <p class="text-cyan-400 font-mono text-sm">Featured Project</p>
-                    <h3 class="text-2xl font-bold text-white mb-4">High-Altitude Non-GPS Navigation</h3>
+                    <p class="text-cyan-400 font-mono text-sm mb-2">Featured Project</p>
+                    <h3 class="text-2xl font-bold text-white mb-4 group">
+                        <span class="group-hover:text-cyan-400 transition-colors duration-300">High-Altitude Non-GPS Navigation</span>
+                    </h3>
                     <div class="bg-light-navy p-6 rounded-md shadow-lg">
                         <p class="leading-relaxed">A novel GSoC project for Ardupilot to enable UAV position estimation at high altitudes without GPS. It leverages a downward-facing camera, fusing a transformer-based Visual Positioning System (VPS) with Visual-Inertial Odometry (VIO) for precise localization against satellite imagery.</p>
                     </div>
@@ -372,13 +720,14 @@
                         <li>C++</li><li>Python</li><li>OpenCV</li><li>PyTorch</li><li>UAVs</li><li>Ardupilot</li>
                     </ul>
                 </div>
-                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden">
+                <div class="project-image opacity-20 md:opacity-100 rounded-lg shadow-xl overflow-hidden relative group">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-navy/50 to-transparent z-10 pointer-events-none"></div>
                     <canvas id="drone-canvas"></canvas>
                 </div>
             </div>
 
             <h3 class="text-2xl text-white font-bold text-center mt-20 mb-10 fade-up">Other Noteworthy Projects</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 other-projects-grid">
                 <div class="bg-light-navy p-6 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300 fade-up">
                     <h4 class="text-lg font-bold text-white mb-2">Drone Swarm Show System</h4>
                     <p class="text-sm mb-4 leading-relaxed">Designed and implemented ArduPilot-based synchronized drone swarm control and long-range wireless comms for drone light shows.</p>
@@ -516,9 +865,12 @@
 
         <!-- Contact Section -->
         <section id="contact" class="section-container text-center fade-up">
-            <h2 class="text-3xl font-bold text-white text-center m-0 p-0 before:hidden">What's Next?</h2>
-            <p class="text-xl mt-6 mb-8 max-w-xl mx-auto leading-relaxed">I'm always seeking new challenges and opportunities to collaborate on ambitious projects. Whether you have a question, a proposal, or just want to say hello, my inbox is always open.</p>
-            <a href="mailto:sharma.sanket272@gmail.com" class="inline-block px-12 py-4 border border-cyan-400 text-cyan-400 rounded hover:bg-cyan-400/10 transition-colors duration-300 font-mono text-lg">Say Hello</a>
+            <h2 class="text-3xl md:text-4xl font-bold text-center m-0 p-0 before:hidden">What's Next?</h2>
+            <p class="text-lg md:text-xl mt-6 mb-10 max-w-2xl mx-auto leading-relaxed text-light-slate">I'm always seeking new challenges and opportunities to collaborate on ambitious projects. Whether you have a question, a proposal, or just want to say hello, my inbox is always open.</p>
+            <a href="mailto:sharma.sanket272@gmail.com" class="group inline-block px-12 py-4 border-2 border-cyan-400 text-cyan-400 rounded font-mono text-lg relative overflow-hidden transition-all duration-300 hover:text-white">
+                <span class="relative z-10">Say Hello</span>
+                <span class="absolute inset-0 bg-cyan-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+            </a>
         </section>
 
         <!-- Footer -->
@@ -542,6 +894,7 @@
         initCursor();
         initHeaderScroll();
         initScrollAnimations();
+        initScrollProgress();
         initMobileMenu();
         initThreeJS();
         initNebula();
@@ -549,6 +902,7 @@
         initSpaceStation();
         initHumanoidAnimation();
         initDroneAnimation();
+        initParallax();
     });
 
     // --- PRELOADER ---
@@ -592,24 +946,62 @@
     
     // --- SCROLL ANIMATIONS ---
     function initScrollAnimations() {
-        const sections = document.querySelectorAll('.fade-up');
+        const sections = document.querySelectorAll('.fade-up, .fade-in-left, .fade-in-right');
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         sections.forEach(section => observer.observe(section));
+    }
+    
+    // --- SCROLL PROGRESS INDICATOR ---
+    function initScrollProgress() {
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (!scrollIndicator) return;
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollIndicator.style.setProperty('--scroll-progress', scrolled + '%');
+        });
+    }
+    
+    // --- PARALLAX EFFECT ---
+    function initParallax() {
+        const parallaxElements = document.querySelectorAll('.project-image, #interactive-visual-container');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            parallaxElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const speed = 0.1;
+                    const yPos = -(scrolled * speed);
+                    element.style.transform = `translateY(${yPos}px)`;
+                }
+            });
+        });
     }
 
     // --- MOBILE MENU ---
     function initMobileMenu() {
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.onclick = () => mobileMenu.classList.toggle('hidden');
+        
+        mobileMenuButton.onclick = () => {
+            mobileMenu.classList.toggle('hidden');
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.style.animation = 'slideDown 0.3s ease-out';
+            }
+        };
+        
         document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            link.addEventListener('click', () => {
+                mobileMenu.style.animation = 'slideUp 0.3s ease-out';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 300);
+            });
         });
     }
 
@@ -860,14 +1252,194 @@
     function initHumanoidAnimation() {
         const canvas = document.getElementById('humanoid-canvas');
         if (!canvas) return;
-        // Placeholder for humanoid animation
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+        camera.position.set(0, 2, 5);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0x06b6d4, 1);
+        directionalLight.position.set(5, 5, 5);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+        const pointLight = new THREE.PointLight(0x06b6d4, 0.5, 10);
+        pointLight.position.set(-3, 2, 3);
+        scene.add(pointLight);
+
+        // Create humanoid-like structure
+        const humanoid = new THREE.Group();
+        
+        // Body
+        const bodyGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.3);
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0x06b6d4, 
+            metalness: 0.7, 
+            roughness: 0.3,
+            emissive: 0x06b6d4,
+            emissiveIntensity: 0.2
+        });
+        const body = new THREE.Mesh(bodyGeometry, material);
+        body.position.y = 0.4;
+        body.castShadow = true;
+        humanoid.add(body);
+
+        // Head
+        const headGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+        const head = new THREE.Mesh(headGeometry, material);
+        head.position.y = 1.1;
+        head.castShadow = true;
+        humanoid.add(head);
+
+        // Arms
+        const armGeometry = new THREE.BoxGeometry(0.15, 0.6, 0.15);
+        const leftArm = new THREE.Mesh(armGeometry, material);
+        leftArm.position.set(-0.35, 0.5, 0);
+        leftArm.castShadow = true;
+        humanoid.add(leftArm);
+        const rightArm = new THREE.Mesh(armGeometry, material);
+        rightArm.position.set(0.35, 0.5, 0);
+        rightArm.castShadow = true;
+        humanoid.add(rightArm);
+
+        // Legs
+        const legGeometry = new THREE.BoxGeometry(0.2, 0.6, 0.2);
+        const leftLeg = new THREE.Mesh(legGeometry, material);
+        leftLeg.position.set(-0.15, -0.5, 0);
+        leftLeg.castShadow = true;
+        humanoid.add(leftLeg);
+        const rightLeg = new THREE.Mesh(legGeometry, material);
+        rightLeg.position.set(0.15, -0.5, 0);
+        rightLeg.castShadow = true;
+        humanoid.add(rightLeg);
+
+        scene.add(humanoid);
+
+        // Animation
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.02;
+            
+            // Walking animation
+            humanoid.position.y = Math.sin(time * 2) * 0.1;
+            leftArm.rotation.x = Math.sin(time * 2) * 0.3;
+            rightArm.rotation.x = -Math.sin(time * 2) * 0.3;
+            leftLeg.rotation.x = -Math.sin(time * 2) * 0.3;
+            rightLeg.rotation.x = Math.sin(time * 2) * 0.3;
+            
+            humanoid.rotation.y += 0.01;
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+        });
     }
 
     // --- DRONE ANIMATION ---
     function initDroneAnimation() {
         const canvas = document.getElementById('drone-canvas');
         if (!canvas) return;
-        // Placeholder for drone animation
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+        camera.position.set(0, 0, 5);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0x06b6d4, 1);
+        directionalLight.position.set(3, 3, 3);
+        scene.add(directionalLight);
+
+        // Create drone
+        const drone = new THREE.Group();
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0x06b6d4, 
+            metalness: 0.8, 
+            roughness: 0.2,
+            emissive: 0x06b6d4,
+            emissiveIntensity: 0.3
+        });
+
+        // Central body
+        const bodyGeometry = new THREE.BoxGeometry(0.6, 0.2, 0.6);
+        const body = new THREE.Mesh(bodyGeometry, material);
+        drone.add(body);
+
+        // Arms
+        const armGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.8, 8);
+        const arms = [];
+        for (let i = 0; i < 4; i++) {
+            const arm = new THREE.Mesh(armGeometry, material);
+            const angle = (i / 4) * Math.PI * 2;
+            arm.position.set(Math.cos(angle) * 0.5, 0, Math.sin(angle) * 0.5);
+            arm.rotation.z = Math.PI / 2;
+            drone.add(arm);
+            arms.push(arm);
+        }
+
+        // Propellers
+        const propGeometry = new THREE.CylinderGeometry(0.15, 0.15, 0.02, 16);
+        const propMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x8892b0, 
+            metalness: 0.5, 
+            roughness: 0.5 
+        });
+        const props = [];
+        for (let i = 0; i < 4; i++) {
+            const prop = new THREE.Mesh(propGeometry, propMaterial);
+            const angle = (i / 4) * Math.PI * 2;
+            prop.position.set(Math.cos(angle) * 0.5, 0.15, Math.sin(angle) * 0.5);
+            drone.add(prop);
+            props.push(prop);
+        }
+
+        scene.add(drone);
+
+        // Animation
+        let time = 0;
+        function animate() {
+            requestAnimationFrame(animate);
+            time += 0.05;
+            
+            // Hovering motion
+            drone.position.y = Math.sin(time) * 0.2;
+            drone.rotation.y += 0.01;
+            
+            // Rotating propellers
+            props.forEach((prop, i) => {
+                prop.rotation.y += 0.5;
+            });
+            
+            // Slight tilt
+            drone.rotation.x = Math.sin(time * 0.5) * 0.1;
+            drone.rotation.z = Math.cos(time * 0.5) * 0.1;
+            
+            renderer.render(scene, camera);
+        }
+        animate();
+        
+        window.addEventListener('resize', () => {
+            camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+        });
     }
 
     // --- THREE.JS BACKGROUND ---
