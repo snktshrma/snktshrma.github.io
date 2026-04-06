@@ -1,1125 +1,853 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanket Sharma | Mechatronics Engineer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0a0e27;
-            --bg-secondary: #0f1629;
-            --bg-tertiary: #1a1f3a;
-            --text-primary: #e4e7eb;
-            --text-secondary: #9ca3af;
-            --text-tertiary: #6b7280;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --accent-glow: rgba(59, 130, 246, 0.3);
-            --border: rgba(59, 130, 246, 0.1);
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Typography */
-        h1, h2, h3, h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(10, 14, 39, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 1.5rem 0;
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: var(--gradient-3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 8rem 2rem 4rem;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-greeting {
-            font-size: 1.25rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-weight: 500;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-        }
-
-        .hero-name {
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #ffffff 0%, #9ca3af 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-        }
-
-        .hero-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-weight: 600;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.6s forwards;
-        }
-
-        .hero-description {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 0.8s forwards;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease 1s forwards;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            display: inline-block;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--accent-glow);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* Section Styles */
-        section {
-            padding: 6rem 2rem;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--gradient-3);
-            border-radius: 2px;
-        }
-
-        .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            margin-top: 2rem;
-            list-style: none;
-        }
-
-        .tech-list li {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        .tech-list li::before {
-            content: '▹';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-
-        .about-visual {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 2rem;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-visual::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Experience Section */
-        .experience-timeline {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .timeline-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover {
-            border-color: var(--accent);
-            transform: translateX(10px);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
-        }
-
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .timeline-title {
-            font-size: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .timeline-company {
-            color: var(--accent);
-        }
-
-        .timeline-date {
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .timeline-description {
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .project-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-3);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .project-category {
-            color: var(--accent);
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .project-description {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            list-style: none;
-        }
-
-        .project-tech li {
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            border: 1px solid var(--border);
-        }
-
-        /* Other Projects */
-        .other-projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        .other-project-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .other-project-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
-
-        .other-project-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-        }
-
-        .other-project-description {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            text-align: center;
-            padding: 8rem 2rem;
-        }
-
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .contact-title {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            margin-bottom: 1.5rem;
-            background: var(--gradient-3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .contact-description {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-links a {
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .footer-text {
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Scroll Progress */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: var(--gradient-3);
-            z-index: 1001;
-            transition: width 0.1s ease;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-cta {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .timeline-header {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sanket Sharma - Mechatronics Engineer specializing in control systems, robotics, and reinforcement learning">
+  <meta name="keywords" content="Sanket Sharma, Mechatronics, Robotics, Control Systems, Reinforcement Learning, Computer Vision">
+  <meta name="author" content="Sanket Sharma">
+
+  <title>Sanket Sharma | Mechatronics Engineer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
 </head>
 <body>
-    <!-- Scroll Progress -->
-    <div class="scroll-progress" id="scrollProgress"></div>
+  <!-- Scroll Progress -->
+  <div id="scroll-progress" style="position: fixed; top: 0; left: 0; height: 2px; background: var(--accent); width: 0%; z-index: 1001; transition: width 0.1s;"></div>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">SS</a>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#achievements">Achievements</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+  <!-- Boot Sequence Loader -->
+  <div id="boot-loader" style="position: fixed; inset: 0; background: var(--bg-primary); z-index: 9999; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); padding: var(--space-6);">
+    <div style="max-width: 600px; width: 100%;">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">boot sequence</span>
         </div>
-    </nav>
+        <div class="terminal-body" id="boot-log">
+          <div class="boot-line"><span class="text-success">[OK]</span> Loading kernel modules...</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Command Palette -->
+  <div id="command-palette" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9998; display: none; align-items: flex-start; justify-content: center; padding-top: 100px;" onclick="if(event.target===this) toggleCommandPalette()">
+    <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-lg); width: 100%; max-width: 500px; overflow: hidden; box-shadow: var(--shadow-lg);">
+      <div style="display: flex; align-items: center; padding: var(--space-4); border-bottom: 1px solid var(--border);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--fg-muted);">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="command-input" placeholder="Type a command or search..." style="flex: 1; background: transparent; border: none; color: var(--fg-primary); font-family: var(--font-mono); font-size: var(--font-base); padding: 0 var(--space-3); outline: none;" />
+        <kbd style="font-family: var(--font-mono); font-size: var(--font-xs); background: var(--bg-tertiary); padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm); color: var(--fg-muted);">ESC</kbd>
+      </div>
+      <div id="command-results" style="max-height: 300px; overflow-y: auto;">
+        <div class="command-item" data-action="home">
+          <span class="command-icon">🏠</span>
+          <span class="command-label">Go to Home</span>
+          <kbd class="command-shortcut">1</kbd>
+        </div>
+        <div class="command-item" data-action="about">
+          <span class="command-icon">👤</span>
+          <span class="command-label">Go to About</span>
+          <kbd class="command-shortcut">2</kbd>
+        </div>
+        <div class="command-item" data-action="experience">
+          <span class="command-icon">💼</span>
+          <span class="command-label">Go to Experience</span>
+          <kbd class="command-shortcut">3</kbd>
+        </div>
+        <div class="command-item" data-action="projects">
+          <span class="command-icon">📁</span>
+          <span class="command-label">Go to Projects</span>
+          <kbd class="command-shortcut">4</kbd>
+        </div>
+        <div class="command-item" data-action="publications">
+          <span class="command-icon">📄</span>
+          <span class="command-label">Go to Publications</span>
+          <kbd class="command-shortcut">5</kbd>
+        </div>
+        <div class="command-item" data-action="contact">
+          <span class="command-icon">📧</span>
+          <span class="command-label">Go to Contact</span>
+          <kbd class="command-shortcut">6</kbd>
+        </div>
+        <div class="command-item" data-action="theme">
+          <span class="command-icon">🎨</span>
+          <span class="command-label">Toggle Theme</span>
+          <kbd class="command-shortcut">t</kbd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <span>ss</span>_portfolio
+      </a>
+
+      <ul class="nav-tabs">
+        <li><button class="nav-tab active" data-target="home">~/home</button></li>
+        <li><button class="nav-tab" data-target="about">~/about</button></li>
+        <li><button class="nav-tab" data-target="experience">~/experience</button></li>
+        <li><button class="nav-tab" data-target="projects">~/projects</button></li>
+        <li><button class="nav-tab" data-target="achievements">~/achievements</button></li>
+        <li><button class="nav-tab" data-target="education">~/education</button></li>
+        <li><button class="nav-tab" data-target="contact">~/contact</button></li>
+      </ul>
+
+      <button class="nav-mobile-toggle" aria-label="Toggle menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
     <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <div class="hero-greeting">Hi, my name is</div>
-            <h1 class="hero-name">Sanket Sharma</h1>
-            <h2 class="hero-title">I build things for the cosmos</h2>
-            <p class="hero-description">
-                I'm a mechatronics engineer specializing in control systems, robotics, and the application of physics principles to solve complex technological challenges. Currently, I'm the Head of Technology at <strong style="color: var(--accent);">Summon</strong>, pioneering advancements in humanoid robotics.
-            </p>
-            <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+    <section id="home" class="hero">
+      <div class="hero-bg"></div>
+
+      <div class="hero-container">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="terminal-dot red"></span>
+            <span class="terminal-dot yellow"></span>
+            <span class="terminal-dot green"></span>
+            <span class="terminal-title">bash — sanket@portfolio:~</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-lines">
+              <!-- Typewriter content injected by JS -->
             </div>
+
+            <div class="hero-cta mt-8">
+              <a href="#projects" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+                View Projects
+              </a>
+              <a href="#contact" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect width="20" height="16" x="2" y="4" rx="2"/>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
+                Get In Touch
+              </a>
+            </div>
+          </div>
         </div>
+
+        <!-- Particle Canvas -->
+        <canvas id="particle-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+      </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="fade-in">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <p class="section-subtitle">Building the future, one system at a time</p>
-            
-            <div class="about-content">
-                <div class="about-text">
-                    <p>
-                        Hello! I'm Sanket, an engineer interested in the intersection of technology, mathematics and physics. What began as curiosity about how things work has grown into a drive to build systems that can move and think in the real world, blending control theory, physics, reinforcement learning and hardware design.
-                    </p>
-                    <p>
-                        I've worked on non-GPS navigation for high-altitude UAVs and on both electronics and software for bipedal robots. I enjoy open-source collaboration to tackle challenges from space exploration to terrestrial automation.
-                    </p>
-                    <p>
-                        I also dabble in high-energy particle and quantum physics; after all, who doesn't like questioning reality before breakfast?
-                    </p>
-                    <p style="margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary); font-weight: 600;">
-                        Here are a few technologies I've been working with recently:
-                    </p>
-                    <ul class="tech-list">
-                        <li>C++ & Python</li>
-                        <li>ROS/ROS2 & Isaac Sim</li>
-                        <li>Reinforcement Learning (RL)</li>
-                        <li>Control Systems (PINN, MPC)</li>
-                        <li>PyTorch & OpenCV</li>
-                        <li>Ardupilot & PX4 Firmware</li>
-                        <li>Go, JavaScript, Solidity</li>
-                        <li>Embedded Systems (STM, RTOS)</li>
-                    </ul>
-                </div>
-                <div class="about-visual">
-                    <div style="width: 100%; height: 300px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); position: relative; z-index: 1;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 4rem; margin-bottom: 1rem;">🚀</div>
-                            <div style="font-size: 1.1rem; font-weight: 600;">Building the Future</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section id="about" class="section fade-in-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">01.</span>
+          About Me
+        </h2>
+        <p class="section-subtitle">Building the future, one system at a time</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Hello! I'm Sanket, an engineer interested in the intersection of technology, mathematics and physics. What began as curiosity about how things work has grown into a drive to build systems that can move and think in the real world, blending control theory, physics, reinforcement learning and hardware design.
+          </p>
+          <p>
+            I've worked on non-GPS navigation for high-altitude UAVs and on both electronics and software for bipedal robots. I enjoy open-source collaboration to tackle challenges from space exploration to terrestrial automation.
+          </p>
+          <p>
+            I also dabble in high-energy particle and quantum physics; after all, who doesn't like questioning reality before breakfast?
+          </p>
         </div>
+
+        <div class="tech-specs">
+          <div class="tech-specs-title">dependencies</div>
+          <ul class="tech-list">
+            <li class="tech-item">
+              <span class="tech-item-name">C++ / Python</span>
+              <span class="tech-item-level">★★★★★</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">ROS / ROS2</span>
+              <span class="tech-item-level">★★★★★</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">Isaac Sim</span>
+              <span class="tech-item-level">★★★★☆</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">Reinforcement Learning</span>
+              <span class="tech-item-level">★★★★☆</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">Control Systems (MPC, PINN)</span>
+              <span class="tech-item-level">★★★★☆</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">PyTorch / OpenCV</span>
+              <span class="tech-item-level">★★★★☆</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">Ardupilot / PX4</span>
+              <span class="tech-item-level">★★★★★</span>
+            </li>
+            <li class="tech-item">
+              <span class="tech-item-name">Embedded (STM32, RTOS)</span>
+              <span class="tech-item-level">★★★★☆</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- Experience Section -->
-    <section id="experience" class="fade-in" style="background: var(--bg-secondary);">
-        <div class="container">
-            <h2 class="section-title">Where I've Worked</h2>
-            <p class="section-subtitle">My professional journey</p>
-            
-            <div class="experience-timeline">
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Head of Technology <span class="timeline-company">@ Summon</span></h3>
-                        </div>
-                        <div class="timeline-date">March 2025 - Present</div>
-                    </div>
-                    <p class="timeline-description">
-                        Leading and developing electronics and software stack for humanoid for cleaning industry. Working on Isaac Sim, Isaac Lab, VLA models, RL, PINN (learning based controller), Classical & Modern Control systems, electrical circuit design, power management for bipedal humanoid. Developing real-time AI assisted long range teleoperation system and working on genetic algorithms, learning by cheating, H-GAIL, Actor-Critic, VLAs, ACT for bipedal legged control and bimanual learning for mobile manipulation.
-                    </p>
-                </div>
+    <section id="experience" class="section fade-in-section" style="background: var(--bg-secondary);">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">02.</span>
+          Experience
+        </h2>
+        <p class="section-subtitle">My professional journey</p>
+      </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Senior Control Engineer <span class="timeline-company">@ Airbotix Technology</span></h3>
-                        </div>
-                        <div class="timeline-date">July 2024 - March 2025</div>
-                    </div>
-                    <p class="timeline-description">
-                        Developed the navigation and controls stack for the Underwater AUV under IdEX project. Developed PINN based MPC, behaviour trees, and various controllers and state estimators. Leading the computer vision, controls and mathematical modelling part of the High Altitude Aerostat for Indian Defence under IdEX project.
-                    </p>
-                </div>
+      <div class="experience-tabs">
+        <button class="exp-tab active">Head of Technology @ Summon</button>
+        <button class="exp-tab">Sr. Control Engineer @ Airbotix</button>
+        <button class="exp-tab">Firmware Engineer @ Airbotix</button>
+        <button class="exp-tab">GSoC @ Ardupilot (2024)</button>
+        <button class="exp-tab">Technical Advisor @ CUAV</button>
+        <button class="exp-tab">Intern @ General Aero</button>
+        <button class="exp-tab">GSoC @ Ardupilot (2022)</button>
+      </div>
 
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Firmware Engineer <span class="timeline-company">@ Airbotix Technology</span></h3>
-                        </div>
-                        <div class="timeline-date">Jan 2024 - June 2024</div>
-                    </div>
-                    <p class="timeline-description">
-                        Lead the software development of collision-free swarm algorithms for drone-show stack. Worked on modifying and developing Ardupilot codebase as per company requirements. Worked on perception, trajectory planning, control designs and firmware development. Worked on long range communication and antenna modelling for one-to-multi communication.
-                    </p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Contributor, GSoC <span class="timeline-company">@ Ardupilot</span></h3>
-                        </div>
-                        <div class="timeline-date">May 2024 - August 2024</div>
-                    </div>
-                    <p class="timeline-description">
-                        Developed High Altitude Non-GPS Position Estimation algorithm for UAVs. Designed and implemented transformer and optimisation based localization and mapping algorithm. Developed custom algorithms using computer vision and deep learning. Technologies: C++, Python, OpenCV, PyTorch, Lua and Embedded software development.
-                    </p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Technical Advisor <span class="timeline-company">@ CUAV Tech</span></h3>
-                        </div>
-                        <div class="timeline-date">September 2023 - Present</div>
-                    </div>
-                    <p class="timeline-description">
-                        Developed a low cost precision landing solution. Working on a monocular camera and offboard computer based approach. Deployed and used image processing, pymavlink and autonomous capability on UAV.
-                    </p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Intern <span class="timeline-company">@ General Aeronautics</span></h3>
-                        </div>
-                        <div class="timeline-date">December 2022 - September 2023</div>
-                    </div>
-                    <p class="timeline-description">
-                        Developing a terrain following algorithm for Agriculture UAVs. Developed simulated worlds and multiple terrain models. Used and learnt about Advanced Control Systems and advanced robotics. Deployed and used image processing, control systems and autonomous capability on UAV.
-                    </p>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div>
-                            <h3 class="timeline-title">Contributor, GSoC <span class="timeline-company">@ Ardupilot</span></h3>
-                        </div>
-                        <div class="timeline-date">May 2022 - September 2022</div>
-                    </div>
-                    <p class="timeline-description">
-                        Updated ROS integration for Non-GPS navigation and autonomous path-planning. Developed a LiDAR equipped quadrotor with Ardupilot FCU. Updated the base code for the Cartographer SLAM tuning parameters and control algorithms. Integrated the offboard object avoidance with ArduPilot Auto mode.
-                    </p>
-                </div>
-            </div>
+      <div class="exp-content active">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">Head of Technology</h3>
+            <p class="exp-company">@ Summon</p>
+          </div>
+          <span class="exp-date">Mar 2025 — Present</span>
         </div>
+        <div class="exp-description">
+          <p>Leading electronics and software stack for humanoid robotics in the cleaning industry.</p>
+          <ul>
+            <li>Working on Isaac Sim, Isaac Lab, VLA models, and RL-based controllers (PINN)</li>
+            <li>Developing real-time AI-assisted long-range teleoperation systems</li>
+            <li>Implementing genetic algorithms, H-GAIL, Actor-Critic, VLAs, ACT for bipedal legged control</li>
+            <li>Designing electrical circuits and power management for bipedal humanoids</li>
+            <li>Bimanual mobile manipulation for cleaning applications</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-content">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">Senior Control Engineer</h3>
+            <p class="exp-company">@ Airbotix Technology</p>
+          </div>
+          <span class="exp-date">Jul 2024 — Mar 2025</span>
+        </div>
+        <div class="exp-description">
+          <p>Developed navigation and controls stack for Underwater AUV under IdEX project.</p>
+          <ul>
+            <li>Implemented PINN-based MPC, behavior trees, and various controllers</li>
+            <li>Built state estimators for underwater vehicle localization</li>
+            <li>Leading computer vision, controls, and mathematical modeling for High Altitude Aerostat</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-content">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">Firmware Engineer</h3>
+            <p class="exp-company">@ Airbotix Technology</p>
+          </div>
+          <span class="exp-date">Jan 2024 — Jun 2024</span>
+        </div>
+        <div class="exp-description">
+          <p>Led software development for collision-free swarm algorithms for drone show stack.</p>
+          <ul>
+            <li>Modified and developed Ardupilot codebase for company requirements</li>
+            <li>Worked on perception, trajectory planning, and control designs</li>
+            <li>Developed long-range communication and antenna modeling for one-to-multi communication</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-content">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">GSoC Contributor</h3>
+            <p class="exp-company">@ Ardupilot</p>
+          </div>
+          <span class="exp-date">May 2024 — Aug 2024</span>
+        </div>
+        <div class="exp-description">
+          <p>Developed High Altitude Non-GPS Position Estimation algorithm for UAVs.</p>
+          <ul>
+            <li>Designed transformer and optimization-based localization and mapping algorithms</li>
+            <li>Developed custom computer vision and deep learning solutions</li>
+            <li>Technologies: C++, Python, OpenCV, PyTorch, Lua, Embedded software</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-content">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">Technical Advisor</h3>
+            <p class="exp-company">@ CUAV Tech</p>
+          </div>
+          <span class="exp-date">Sep 2023 — Present</span>
+        </div>
+        <div class="exp-description">
+          <p>Developed a low-cost precision landing solution using monocular camera and offboard computer approach.</p>
+          <ul>
+            <li>Deployed image processing, PyMavlink, and autonomous capabilities on UAV</li>
+            <li>Implemented vision-based landing algorithms for high-accuracy landings</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-content">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">Intern</h3>
+            <p class="exp-company">@ General Aeronautics</p>
+          </div>
+          <span class="exp-date">Dec 2022 — Sep 2023</span>
+        </div>
+        <div class="exp-description">
+          <p>Developing terrain following algorithm for Agriculture UAVs.</p>
+          <ul>
+            <li>Designed simulated worlds and multiple terrain models</li>
+            <li>Used advanced control systems and advanced robotics</li>
+            <li>Deployed image processing, control systems and autonomous capability on UAV</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-content">
+        <div class="exp-header">
+          <div>
+            <h3 class="exp-title">GSoC Contributor</h3>
+            <p class="exp-company">@ Ardupilot</p>
+          </div>
+          <span class="exp-date">May 2022 — Sep 2022</span>
+        </div>
+        <div class="exp-description">
+          <p>Updated ROS integration for Non-GPS navigation and autonomous path-planning.</p>
+          <ul>
+            <li>Developed LiDAR-equipped quadrotor with Ardupilot FCU</li>
+            <li>Updated base code for Cartographer SLAM tuning parameters and control algorithms</li>
+            <li>Integrated offboard object avoidance with ArduPilot Auto mode</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="fade-in">
-        <div class="container">
-            <h2 class="section-title">Some Things I've Built</h2>
-            <p class="section-subtitle">Featured projects and contributions</p>
-            
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-category">Featured Project</div>
-                    <h3 class="project-title">Space Station OS - GNC & AOCS</h3>
-                    <p class="project-description">
-                        Contributions to the Guidance, Navigation, and Control (GNC) and Attitude & Orbit Control Systems (AOCS) for an open-source space station operating system. My work involves designing and implementing the behavior tree architecture for autonomous operations and GNC & AOCS physics backend and SSOS SITL.
-                    </p>
-                    <ul class="project-tech">
-                        <li>C++</li>
-                        <li>ROS2</li>
-                        <li>GNC/AOCS</li>
-                        <li>Behavior Trees</li>
-                        <li>Simulation</li>
-                    </ul>
-                </div>
+    <section id="projects" class="section fade-in-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">03.</span>
+          Projects
+        </h2>
+        <p class="section-subtitle">Some things I've built</p>
+      </div>
 
-                <div class="project-card">
-                    <div class="project-category">Featured Project</div>
-                    <h3 class="project-title">Humanoid Control & Teleoperation</h3>
-                    <p class="project-description">
-                        A comprehensive software and hardware stack for a bipedal humanoid for Summon. The product involves real-time AI-assisted long-range teleoperation, advanced control systems (RL, PINN, VLAs), and bimanual mobile manipulation, tested & simulated in Isaac Sim and deployed on hardware.
-                    </p>
-                    <ul class="project-tech">
-                        <li>Isaac Sim</li>
-                        <li>RL (PPO, SAC)</li>
-                        <li>PINN</li>
-                        <li>ROS2</li>
-                        <li>C++</li>
-                        <li>VLA Models</li>
-                    </ul>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-category">Featured Project</div>
-                    <h3 class="project-title">High-Altitude Non-GPS Navigation</h3>
-                    <p class="project-description">
-                        A novel GSoC project for Ardupilot to enable UAV position estimation at high altitudes without GPS. It leverages a downward-facing camera, fusing a transformer-based Visual Positioning System (VPS) with Visual-Inertial Odometry (VIO) for precise localization against satellite imagery.
-                    </p>
-                    <ul class="project-tech">
-                        <li>C++</li>
-                        <li>Python</li>
-                        <li>OpenCV</li>
-                        <li>PyTorch</li>
-                        <li>UAVs</li>
-                        <li>Ardupilot</li>
-                    </ul>
-                </div>
+      <div class="projects-masonry">
+        <!-- Project 1 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">space-station-os</span>
+            <div class="project-links">
+              <a href="#" class="project-link" title="View Code">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+              </a>
             </div>
-
-            <h3 style="text-align: center; font-size: 2rem; margin: 4rem 0 2rem; color: var(--text-primary);">Other Noteworthy Projects</h3>
-            
-            <div class="other-projects">
-                <div class="other-project-card">
-                    <h4 class="other-project-title">Drone Swarm Show System</h4>
-                    <p class="other-project-description">
-                        Designed and implemented ArduPilot-based synchronized drone swarm control and long-range wireless comms for drone light shows.
-                    </p>
-                </div>
-
-                <div class="other-project-card">
-                    <h4 class="other-project-title">ISRO CanSat</h4>
-                    <p class="other-project-description">
-                        National finalist entry for the ISRO CANSAT competition. Developed a satellite with active 2-axis attitude stabilization using reaction wheels and LQR controllers.
-                    </p>
-                </div>
-
-                <div class="other-project-card">
-                    <h4 class="other-project-title">Precision Landing System</h4>
-                    <p class="other-project-description">
-                        Built a monocular vision-based landing system for UAVs using PyMavlink, grid map, and OpenCV for high-accuracy landings.
-                    </p>
-                </div>
-
-                <div class="other-project-card">
-                    <h4 class="other-project-title">Sahaya Humanoid</h4>
-                    <p class="other-project-description">
-                        An old age nursing ROS based humanoid robot capable of autonomously mapping and navigating around the house and providing medicine and water to elderly people. Developed whole perception software and 3D printed the face.
-                    </p>
-                </div>
-
-                <div class="other-project-card">
-                    <h4 class="other-project-title">mini-Quadruped</h4>
-                    <p class="other-project-description">
-                        A 4-legged autonomous robot capable of giving medicines, walking and having offboard AI to interact with users. Kinematic and control model for motion written from scratch on indigenous microcontroller, Vega processor.
-                    </p>
-                </div>
-            </div>
+          </div>
+          <h3 class="project-title">Space Station OS — GNC & AOCS</h3>
+          <p class="project-description">
+            Contributions to the Guidance, Navigation, and Control (GNC) and Attitude & Orbit Control Systems (AOCS) for an open-source space station operating system. Designed behavior tree architecture for autonomous operations and GNC/AOCS physics backend with SSOS SITL.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">C++</span>
+            <span class="tech-tag">ROS2</span>
+            <span class="tech-tag">GNC/AOCS</span>
+            <span class="tech-tag">Behavior Trees</span>
+            <span class="tech-tag">Simulation</span>
+          </div>
         </div>
+
+        <!-- Project 2 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">humanoid-control</span>
+            <div class="project-links">
+              <a href="#" class="project-link" title="View Demo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15,3 21,3 21,9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title">Humanoid Control & Teleoperation</h3>
+          <p class="project-description">
+            Comprehensive software and hardware stack for a bipedal humanoid. Real-time AI-assisted long-range teleoperation, advanced control systems (RL, PINN, VLAs), and bimanual mobile manipulation, tested in Isaac Sim and deployed on hardware.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">Isaac Sim</span>
+            <span class="tech-tag">RL (PPO, SAC)</span>
+            <span class="tech-tag">PINN</span>
+            <span class="tech-tag">ROS2</span>
+            <span class="tech-tag">VLA Models</span>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">non-gps-nav</span>
+            <div class="project-links">
+              <a href="#" class="project-link" title="View Code">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <h3 class="project-title">High-Altitude Non-GPS Navigation</h3>
+          <p class="project-description">
+            GSoC project for Ardupilot enabling UAV position estimation at high altitudes without GPS. Leverages downward-facing camera, fusing transformer-based Visual Positioning System (VPS) with Visual-Inertial Odometry (VIO).
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">C++</span>
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">OpenCV</span>
+            <span class="tech-tag">PyTorch</span>
+            <span class="tech-tag">UAVs</span>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">drone-swarm</span>
+          </div>
+          <h3 class="project-title">Drone Swarm Show System</h3>
+          <p class="project-description">
+            Designed and implemented ArduPilot-based synchronized drone swarm control and long-range wireless communications for drone light shows.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">Ardupilot</span>
+            <span class="tech-tag">Swarm Control</span>
+            <span class="tech-tag">Wireless Comms</span>
+          </div>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">isro-cansat</span>
+          </div>
+          <h3 class="project-title">ISRO CanSat</h3>
+          <p class="project-description">
+            National finalist entry for ISRO CANSAT competition. Developed satellite with active 2-axis attitude stabilization using reaction wheels and LQR controllers.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">Control Systems</span>
+            <span class="tech-tag">LQR</span>
+            <span class="tech-tag">Embedded</span>
+          </div>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">precision-landing</span>
+          </div>
+          <h3 class="project-title">Precision Landing System</h3>
+          <p class="project-description">
+            Monocular vision-based landing system for UAVs using PyMavlink, grid map, and OpenCV for high-accuracy landings.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">OpenCV</span>
+            <span class="tech-tag">PyMavlink</span>
+            <span class="tech-tag">Computer Vision</span>
+          </div>
+        </div>
+
+        <!-- Project 7 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">sahaya-humanoid</span>
+          </div>
+          <h3 class="project-title">Sahaya Humanoid</h3>
+          <p class="project-description">
+            ROS-based humanoid robot for elderly care, capable of autonomously mapping and navigating homes, providing medicine and water. Developed perception software and 3D printed face.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">ROS</span>
+            <span class="tech-tag">Navigation</span>
+            <span class="tech-tag">3D Printing</span>
+          </div>
+        </div>
+
+        <!-- Project 8 -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-folder">mini-quadruped</span>
+          </div>
+          <h3 class="project-title">Mini Quadruped</h3>
+          <p class="project-description">
+            4-legged autonomous robot with kinematic and control model written from scratch on indigenous microcontroller (Vega processor). Capable of walking and AI interaction.
+          </p>
+          <div class="project-tech">
+            <span class="tech-tag">Kinematics</span>
+            <span class="tech-tag">Embedded</span>
+            <span class="tech-tag">Control Systems</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Achievements Section -->
-    <section id="achievements" class="fade-in" style="background: var(--bg-secondary);">
-        <div class="container">
-            <h2 class="section-title">Achievements & Recognition</h2>
-            <p class="section-subtitle">Notable accomplishments and competitions</p>
-            
-            <div class="projects-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-                <div class="project-card">
-                    <div class="project-category">Competition</div>
-                    <h3 class="project-title">ISRO CANSAT 2023</h3>
-                    <p class="project-description">
-                        National Finalist for developing a CANSAT with active attitude stabilisation using reaction wheels and LQR controllers.
-                    </p>
-                </div>
+    <section id="achievements" class="section fade-in-section" style="background: var(--bg-secondary);">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">04.</span>
+          Achievements
+        </h2>
+        <p class="section-subtitle">Recognition and competitions</p>
+      </div>
 
-                <div class="project-card">
-                    <div class="project-category">Competition</div>
-                    <h3 class="project-title">Microsoft Imagine Cup 2023</h3>
-                    <p class="project-description">
-                        India Regional Finalist for developing a blockchain based drone aggregator platform.
-                    </p>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-category">Competition</div>
-                    <h3 class="project-title">Smart India Hackathon 2022</h3>
-                    <p class="project-description">
-                        Led a team of 6 members to the National Finals organized by Ministry of Education (MoE), Government of India.
-                    </p>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-category">Competition</div>
-                    <h3 class="project-title">eYRC Robotics Competition</h3>
-                    <p class="project-description">
-                        National Level Runner-up in IIT Bombay organized competition for a custom flight controller and program developed for a ROS based delivery drone.
-                    </p>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-category">Competition</div>
-                    <h3 class="project-title">Tekathon'22</h3>
-                    <p class="project-description">
-                        Winner at Chandigarh University organized competition for Sahaya humanoid project.
-                    </p>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-category">Hackathons</div>
-                    <h3 class="project-title">International Hackathons</h3>
-                    <p class="project-description">
-                        1st Rank winner in multiple international hackathons: Quellie Hacks, StemWarriorHacks, RoboHacks and HackKu in hardware and overall categories.
-                    </p>
-                </div>
-            </div>
+      <div class="achievements-grid">
+        <div class="achievement-card">
+          <div class="achievement-icon">🏆</div>
+          <h3 class="achievement-title">ISRO CANSAT 2023</h3>
+          <p class="achievement-description">National Finalist for developing a CANSAT with active attitude stabilisation using reaction wheels and LQR controllers.</p>
         </div>
+
+        <div class="achievement-card">
+          <div class="achievement-icon">🥇</div>
+          <h3 class="achievement-title">Microsoft Imagine Cup 2023</h3>
+          <p class="achievement-description">India Regional Finalist for developing a blockchain-based drone aggregator platform.</p>
+        </div>
+
+        <div class="achievement-card">
+          <div class="achievement-icon">🏅</div>
+          <h3 class="achievement-title">Smart India Hackathon 2022</h3>
+          <p class="achievement-description">Led a team of 6 to National Finals organized by Ministry of Education, Government of India.</p>
+        </div>
+
+        <div class="achievement-card">
+          <div class="achievement-icon">🥈</div>
+          <h3 class="achievement-title">eYRC Robotics Competition</h3>
+          <p class="achievement-description">National Level Runner-up in IIT Bombay competition for custom flight controller and ROS-based delivery drone.</p>
+        </div>
+
+        <div class="achievement-card">
+          <div class="achievement-icon">🏆</div>
+          <h3 class="achievement-title">Tekathon'22</h3>
+          <p class="achievement-description">Winner at Chandigarh University competition for Sahaya humanoid project.</p>
+        </div>
+
+        <div class="achievement-card">
+          <div class="achievement-icon">🌍</div>
+          <h3 class="achievement-title">International Hackathons</h3>
+          <p class="achievement-description">1st Rank winner in Quellie Hacks, StemWarriorHacks, RoboHacks, and HackKu (hardware and overall categories).</p>
+        </div>
+      </div>
     </section>
 
     <!-- Education Section -->
-    <section id="education" class="fade-in">
-        <div class="container">
-            <h2 class="section-title">Education</h2>
-            <p class="section-subtitle">Academic background</p>
-            
-            <div class="timeline-item" style="max-width: 900px; margin: 0 auto;">
-                <div class="timeline-header">
-                    <div>
-                        <h3 class="timeline-title">Bachelor of Engineering in Mechatronics</h3>
-                        <p style="color: var(--accent); margin-top: 0.5rem;">Chandigarh University</p>
-                    </div>
-                    <div class="timeline-date">August 2020 — July 2024</div>
-                </div>
-                <p class="timeline-description">
-                    <strong>CGPA:</strong> 8.12/10<br>
-                    <strong>Activities:</strong> IEEE RAS Treasurer<br>
-                    Participated and won multiple recognized national and international robotics competitions
-                </p>
-            </div>
+    <section id="education" class="section fade-in-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">05.</span>
+          Education
+        </h2>
+        <p class="section-subtitle">Academic background</p>
+      </div>
+
+      <div class="education-card">
+        <div class="education-info">
+          <h3>Bachelor of Engineering in Mechatronics</h3>
+          <p class="education-school">Chandigarh University</p>
+          <p class="text-muted">Participated and won multiple recognized national and international robotics competitions. Served as IEEE RAS Treasurer.</p>
         </div>
+        <div class="education-meta">
+          <span>CGPA: 8.12/10</span>
+          <span>2020 — 2024</span>
+        </div>
+      </div>
     </section>
 
     <!-- Mentorship Section -->
-    <section id="mentorship" class="fade-in" style="background: var(--bg-secondary);">
-        <div class="container">
-            <h2 class="section-title">Mentorship & Community</h2>
-            <p class="section-subtitle">Giving back to the community</p>
-            
-            <div class="timeline-item" style="max-width: 900px; margin: 0 auto;">
-                <div class="project-category">Google Summer of Code (GSoC) & Ardupilot</div>
-                <h3 class="project-title" style="margin-bottom: 1rem;">Guiding the Next Generation of Developers</h3>
-                <p class="project-description">
-                    Actively contributing and mentoring contributors in the Ardupilot community, focusing on projects like, non-GPS absolute LiDAR positioning and the implementation of Software-in-the-Loop (SITL) with Reinforcement Learning for advanced autonomous systems.
-                </p>
-            </div>
+    <section id="mentorship" class="section fade-in-section" style="background: var(--bg-secondary);">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">06.</span>
+          Mentorship
+        </h2>
+        <p class="section-subtitle">Giving back to the community</p>
+      </div>
+
+      <div class="mentorship-card">
+        <div class="mentorship-org">Google Summer of Code & Ardupilot</div>
+        <h3 class="project-title">Guiding the Next Generation of Developers</h3>
+        <p class="project-description">
+          Actively contributing and mentoring contributors in the Ardupilot community, focusing on projects like non-GPS absolute LiDAR positioning and the implementation of Software-in-the-Loop (SITL) with Reinforcement Learning for advanced autonomous systems.
+        </p>
+      </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications" class="section fade-in-section" style="background: var(--bg-secondary);">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">07.</span>
+          Publications
+        </h2>
+        <p class="section-subtitle">Peer-reviewed research and papers under review</p>
+      </div>
+
+      <div class="publications-list">
+        <!-- Paper 1 -->
+        <div class="publication-card">
+          <div class="publication-status status-under-review">
+            <span class="status-indicator"></span>
+            Under Review
+          </div>
+          <h3 class="publication-title">ModelFabric: Explainability-Guided Selective Shielding for Secure Vision-Language Action Models on Edge Robots</h3>
+          <div class="publication-authors">
+            <span class="author">Xiaolong Wu</span>,
+            <span class="author highlight">Sanket Sharma</span>,
+            <span class="author">Sarah Pendhari</span>,
+            <span class="author">Xiangyu Shi</span>,
+            <span class="author">Min Xu</span>
+          </div>
+          <div class="publication-venue">
+            <span class="venue-badge">ICML 2026</span>
+            <span class="venue-name">International Conference on Machine Learning</span>
+            <span class="venue-affiliation">Carnegie Mellon University</span>
+          </div>
+          <div class="publication-meta">
+            <span class="meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+              </svg>
+              Vision-Language Models
+            </span>
+            <span class="meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              Edge Robotics
+            </span>
+            <span class="meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+              </svg>
+              AI Safety
+            </span>
+          </div>
         </div>
+
+        <!-- Paper 2 -->
+        <div class="publication-card">
+          <div class="publication-status status-under-review">
+            <span class="status-indicator"></span>
+            Under Review
+          </div>
+          <h3 class="publication-title">NGPS: GPS-Denied Aerial Geo-Localization and 2.5D Reconstruction via Deep Satellite Image Matching and Multi-Rate Sensor Fusion</h3>
+          <div class="publication-authors">
+            <span class="author highlight">Sanket Sharma</span>,
+            <span class="author">et al.</span>
+          </div>
+          <div class="publication-venue">
+            <span class="venue-badge">IROS 2026</span>
+            <span class="venue-name">IEEE/RSJ International Conference on Intelligent Robots and Systems</span>
+          </div>
+          <div class="publication-meta">
+            <span class="meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88 16.24,7.76"/>
+              </svg>
+              Geo-Localization
+            </span>
+            <span class="meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              Sensor Fusion
+            </span>
+            <span class="meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              3D Reconstruction
+            </span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Talks Section -->
-    <section id="talks" class="fade-in">
-        <div class="container">
-            <h2 class="section-title">Publications & Talks</h2>
-            <p class="section-subtitle">Sharing knowledge with the community</p>
-            
-            <div class="projects-grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
-                <div class="project-card">
-                    <div class="project-category">Ardupilot Developer Conference 2024, Japan</div>
-                    <h3 class="project-title">High Altitude Non-GPS Position Estimation</h3>
-                </div>
+    <section id="talks" class="section fade-in-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="section-number">08.</span>
+          Talks & Presentations
+        </h2>
+        <p class="section-subtitle">Conference presentations and invited talks</p>
+      </div>
 
-                <div class="project-card">
-                    <div class="project-category">PX4 Developer Summit 2023, USA</div>
-                    <h3 class="project-title">Autonomous Non-GPS Control for Indoor Navigation</h3>
-                </div>
-            </div>
+      <div class="talks-list">
+        <div class="talk-card">
+          <div>
+            <h3 class="talk-title">High Altitude Non-GPS Position Estimation</h3>
+            <p class="talk-venue">Ardupilot Developer Conference 2024, Japan</p>
+          </div>
+          <a href="#" class="btn btn-secondary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5,3 19,12 5,21 5,3"/>
+            </svg>
+            Watch
+          </a>
         </div>
+
+        <div class="talk-card">
+          <div>
+            <h3 class="talk-title">Autonomous Non-GPS Control for Indoor Navigation</h3>
+            <p class="talk-venue">PX4 Developer Summit 2023, USA</p>
+          </div>
+          <a href="#" class="btn btn-secondary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5,3 19,12 5,21 5,3"/>
+            </svg>
+            Watch
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact-section fade-in">
-        <div class="contact-content">
-            <h2 class="contact-title">What's Next?</h2>
-            <p class="contact-description">
-                I'm always seeking new challenges and opportunities to collaborate on ambitious projects. Whether you have a question, a proposal, or just want to say hello, my inbox is always open.
-            </p>
-            <a href="mailto:sharma.sanket272@gmail.com" class="btn btn-primary" style="font-size: 1.1rem; padding: 1.2rem 3rem;">
-                Say Hello
-            </a>
+    <section id="contact" class="contact-section fade-in-section">
+      <div class="contact-terminal">
+        <div class="terminal-header">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="terminal-title">bash — contact@portfolio</span>
         </div>
+        <div class="terminal-body">
+          <div class="contact-prompt">
+            <span class="terminal-prompt">$</span>
+            <span class="terminal-command">send_message --to "sanket"</span>
+          </div>
+          <p class="contact-description">
+            I'm always seeking new challenges and opportunities to collaborate on ambitious projects. Whether you have a question, a proposal, or just want to say hello, my inbox is always open.
+          </p>
+          <a href="mailto:sharma.sanket272@gmail.com" class="contact-email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="20" height="16" x="2" y="4" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            sharma.sanket272@gmail.com
+          </a>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="social-links">
-            <a href="https://github.com/snktshrma" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub - 119 repositories, 161 stars">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                </svg>
-            </a>
-            <a href="https://www.linkedin.com/in/sanket-sharma-2002" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-            </a>
-        </div>
-        <p class="footer-text">Designed & Built by Sanket Sharma © 2024</p>
-        <p class="footer-text" style="margin-top: 0.5rem; font-size: 0.85rem;">
-            Member of: ArduPilot • ArableProtocol • ROBOTRONS-101 • Project-HoneyComb • space-station-os • Summon-RnD
-        </p>
-    </footer>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-social">
+        <a href="https://github.com/snktshrma" target="_blank" rel="noopener noreferrer">
+          <span style="display: flex; align-items: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+            <span style="margin-left: 8px;">GitHub</span>
+          </span>
+        </a>
+        <a href="https://www.linkedin.com/in/sanket-sharma-2002" target="_blank" rel="noopener noreferrer">
+          <span style="display: flex; align-items: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+            <span style="margin-left: 8px;">LinkedIn</span>
+          </span>
+        </a>
+      </div>
 
-    <script>
-        // Scroll Progress
-        window.addEventListener('scroll', () => {
-            const scrollProgress = document.getElementById('scrollProgress');
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (window.scrollY / windowHeight) * 100;
-            scrollProgress.style.width = scrolled + '%';
-        });
+      <div class="footer-meta">
+        <span>Designed & Built by Sanket Sharma © 2024</span>
+      </div>
+    </div>
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+    <div class="footer-orgs">
+      <span class="footer-org">Ardupilot</span>
+      <span class="footer-org">ArableProtocol</span>
+      <span class="footer-org">ROBOTRONS-101</span>
+      <span class="footer-org">Project-HoneyComb</span>
+      <span class="footer-org">space-station-os</span>
+      <span class="footer-org">Summon-RnD</span>
+    </div>
+  </footer>
 
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="toggleCommandPalette()" aria-label="Quick actions">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+    <span class="fab-tooltip">Quick Nav (Ctrl+K)</span>
+  </button>
 
-        // Intersection Observer for Fade-in
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Mobile Menu (simple toggle)
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.querySelector('.nav-links');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            navLinks.style.flexDirection = 'column';
-            navLinks.style.position = 'absolute';
-            navLinks.style.top = '100%';
-            navLinks.style.left = '0';
-            navLinks.style.right = '0';
-            navLinks.style.background = 'var(--bg-primary)';
-            navLinks.style.padding = '2rem';
-            navLinks.style.borderTop = '1px solid var(--border)';
-        });
-    </script>
+  <!-- Application Scripts -->
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
