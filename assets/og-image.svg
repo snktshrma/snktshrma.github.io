@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="80%" cy="10%" r="60%">
+      <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Terminal window -->
+  <rect x="60" y="60" width="1080" height="510" rx="12" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+
+  <!-- Title bar -->
+  <rect x="60" y="60" width="1080" height="48" rx="12" fill="#0d1117"/>
+  <rect x="60" y="90" width="1080" height="18" fill="#0d1117"/>
+  <circle cx="92" cy="84" r="7" fill="#ff5f56"/>
+  <circle cx="116" cy="84" r="7" fill="#ffbd2e"/>
+  <circle cx="140" cy="84" r="7" fill="#27c93f"/>
+  <text x="600" y="89" font-family="SF Mono, Consolas, monospace" font-size="15" fill="#8b949e" text-anchor="middle">bash — sanket@portfolio:~</text>
+
+  <!-- Body -->
+  <text x="100" y="175" font-family="SF Mono, Consolas, monospace" font-size="20" fill="#58a6ff">$ whoami</text>
+
+  <text x="100" y="235" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="56" fill="#c9d1d9">Sanket Sharma</text>
+
+  <text x="100" y="285" font-family="SF Mono, Consolas, monospace" font-size="24" fill="#79c0ff">Mechatronics &amp; Robotics Engineer</text>
+
+  <text x="100" y="330" font-family="Inter, Arial, sans-serif" font-size="19" fill="#8b949e">Control systems &#183; Reinforcement learning &#183; Humanoid robotics &#183; UAV autonomy</text>
+
+  <!-- Tags -->
+  <g font-family="SF Mono, Consolas, monospace" font-size="16" fill="#c9d1d9">
+    <rect x="100" y="365" width="150" height="36" rx="18" fill="#21262d" stroke="#30363d"/>
+    <text x="175" y="388" text-anchor="middle">Ardupilot</text>
+
+    <rect x="264" y="365" width="150" height="36" rx="18" fill="#21262d" stroke="#30363d"/>
+    <text x="339" y="388" text-anchor="middle">ROS / ROS2</text>
+
+    <rect x="428" y="365" width="180" height="36" rx="18" fill="#21262d" stroke="#30363d"/>
+    <text x="518" y="388" text-anchor="middle">Isaac Sim</text>
+
+    <rect x="622" y="365" width="150" height="36" rx="18" fill="#21262d" stroke="#30363d"/>
+    <text x="697" y="388" text-anchor="middle">PyTorch</text>
+
+    <rect x="786" y="365" width="230" height="36" rx="18" fill="#21262d" stroke="#30363d"/>
+    <text x="901" y="388" text-anchor="middle">Control Systems</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="100" y1="440" x2="1100" y2="440" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Footer line -->
+  <text x="100" y="490" font-family="SF Mono, Consolas, monospace" font-size="17" fill="#8b949e">Head of Technology @ Summon  &#183;  GSoC Mentor &amp; Alum @ Ardupilot</text>
+  <text x="100" y="525" font-family="SF Mono, Consolas, monospace" font-size="17" fill="#8b949e">Space Station OS  &#183;  Humanoid Control  &#183;  Non-GPS UAV Navigation</text>
+
+  <text x="1100" y="525" font-family="SF Mono, Consolas, monospace" font-size="18" fill="#58a6ff" text-anchor="end">snktshrma.github.io</text>
+</svg>
